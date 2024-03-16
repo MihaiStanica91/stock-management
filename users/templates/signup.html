@@ -1,19 +1,38 @@
+{% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% bootstrap_css %}
     <title>SignUp</title>
 </head>
 <body>
-    <h3>Sign up</h3>
-    <form method="POST" autocomplete="off">
-        {% csrf_token %}
-        {{ registerform.as_p }}
-        <input type="submit" value="Register"/>
-    </form>
-    <a href="{% url '' %}">
-        <button>Login</button>
-    </a>
+    {% bootstrap_messages %}
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <h3>Sign up</h3>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-3">
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                {% bootstrap_form registerform %}
+                <div class="d-flex justify-content-center">
+                    <input type="submit" class="btn btn-success" value="Register"/>
+                </div>
+            </form>
+            <br>
+            <div class="d-flex justify-content-center">
+                <a href="{% url '' %}">
+                    <button type="button" class="btn btn-primary">Login</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript %}
 </body>
 </html>

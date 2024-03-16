@@ -1,13 +1,25 @@
+{% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% bootstrap_css %}
     <title>Dashboard</title>
 </head>
 <body>
-    <h3>Welcome on Dashboard {{request.user.username}}!!!</h3>
-
-    <a href="{% url 'user_logout' %}"> Logout</a>
+    {% bootstrap_messages %}
+    <div class="d-flex justify-content-center">
+        <h3>Welcome on Dashboard {{request.user.username}}!!!</h3>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'user_logout' %}">
+            <button type="button" class="btn btn-danger">Logout</button>
+        </a>
+    </div>
+    {% bootstrap_javascript %}
 </body>
 </html>
