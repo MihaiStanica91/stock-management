@@ -5,34 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% bootstrap_css %}
-    <title>SignUp</title>
+    <title>Company Register</title>
 </head>
 <body>
     {% bootstrap_messages %}
+    <div>
     <br>
     <br>
     <br>
     <div class="d-flex justify-content-center">
-        <h3>Sign up</h3>
+        <h3>Register your company</h3>
     </div>
     <br>
     <div class="d-flex justify-content-center">
         <div class="col-sm-3">
             <form method="POST" autocomplete="off">
                 {% csrf_token %}
-                {% bootstrap_form registerform %}
-                {% bootstrap_form roleform %}
+                {% bootstrap_form companyform %}
                 <div class="d-flex justify-content-center">
                     <input type="submit" class="btn btn-success" value="Register"/>
                 </div>
             </form>
             <br>
             <div class="d-flex justify-content-center">
-                <a href="{% url '' %}">
-                    <button type="button" class="btn btn-primary">Login</button>
+                <a href="{% url 'dashboard' %}">
+                    <button type="button" class="btn btn-primary">Back</button>
                 </a>
             </div>
         </div>
+    </div>
     </div>
     {% bootstrap_javascript %}
 </body>
