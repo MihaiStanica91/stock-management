@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,12 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% bootstrap_css %}
-    <title>Dashboard</title>
+    <title>{% block title %}Dashboard{% endblock %}</title>
 </head>
 <body>
-    {% bootstrap_messages %}
+    {% block content %}
+    {% for message in messages %}
+        {% if message.message != 'You do not have a company profile.' %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
     <div class="d-flex justify-content-center">
-        <h3>Welcome on Dashboard {{request.user.username}}!!!</h3>
+        <h3>Welcome {{request.user.username}}!!!</h3>
     </div>
     <br>
     <br>
@@ -23,10 +32,18 @@
     <br>
     <br>
     <div class="d-flex justify-content-center">
+        <a href="{% url 'send_invitation_form' %}">
+            <button type="button" class="btn btn-primary">Create new user</button>
+        </a>
+    </div>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
         <a href="{% url 'user_logout' %}">
             <button type="button" class="btn btn-danger">Logout</button>
         </a>
     </div>
     {% bootstrap_javascript %}
+    {% endblock %}
 </body>
 </html>

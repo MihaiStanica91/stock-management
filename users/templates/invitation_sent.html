@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% bootstrap_css %}
+    <title>{% block title %}Invitation Sent{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% bootstrap_messages %}
+    <h1>Invitation Sent</h1>
+    <p>Your invitation has been successfully sent. Thank you!</p>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'send_invitation_form' %}">
+            <button type="button" class="btn btn-danger">Go Back!</button>
+        </a>
+    </div>
+    {% bootstrap_javascript %}
+    {% endblock %}
+</body>
+</html>
