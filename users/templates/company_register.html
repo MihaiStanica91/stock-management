@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% bootstrap_css %}
-    <title>{% block title %}Company Register{% endblock %}</title>
-</head>
-<body>
-    {% block content %}
-    {% bootstrap_messages %}
-    <div>
-    <br>
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <h3>Register your company</h3>
-    </div>
-    <br>
-    <div class="d-flex justify-content-center">
-        <div class="col-sm-3">
-            <form method="POST" autocomplete="off">
-                {% csrf_token %}
-                {% bootstrap_form companyform %}
-                <div class="d-flex justify-content-center">
-                    <input type="submit" class="btn btn-success" value="Register"/>
-                </div>
-            </form>
-            <br>
+
+{% bootstrap_css %}
+
+{% block title %}company Register{%endblock title %}
+
+{% block content %}
+{% bootstrap_messages %}
+<div>
+<br>
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <h3>Register your company</h3>
+</div>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="col-sm-3">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            {% bootstrap_form company_form %}
             <div class="d-flex justify-content-center">
-                <a href="{% url 'dashboard' %}">
-                    <button type="button" class="btn btn-primary">Back</button>
-                </a>
+                <input type="submit" class="btn btn-success" value="Register"/>
             </div>
+        </form>
+        <br>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'dashboard' %}">
+                <button type="button" class="btn btn-primary">Back</button>
+            </a>
         </div>
     </div>
-    </div>
-    {% bootstrap_javascript %}
-    {% endblock %}
-</body>
-</html>
+</div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %}

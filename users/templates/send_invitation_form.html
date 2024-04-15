@@ -1,38 +1,32 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% bootstrap_css %}
-    <title>{% block title %}Invitation Form{% endblock %}</title>
-</head>
-<body>
-    {% block content %}
-    {% bootstrap_messages %}
-    <div class="d-flex justify-content-center">
-        <h1>Send Invitation</h1>
-    </div>
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <form method="post" autocomplete="off">
-            {% csrf_token %}
-            {% bootstrap_form invitationform %}
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Send Invitation</button>
-            </div>
-        </form>
-    </div>
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <a href="{% url 'dashboard' %}">
-            <button type="button" class="btn btn-danger">Go Back!</button>
-        </a>
-    </div>
-    {% bootstrap_javascript %}
-    {% endblock %}
-</body>
-</html>
+
+{% bootstrap_css %}
+
+{% block title %}Send Invitation{%endblock title %}
+
+{% block content %}
+{% bootstrap_messages %}
+<div class="d-flex justify-content-center">
+    <h1>Send Invitation</h1>
+</div>
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <form method="post" autocomplete="off">
+        {% csrf_token %}
+        {% bootstrap_form invitation_form %}
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Send Invitation</button>
+        </div>
+    </form>
+</div>
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <a href="{% url 'dashboard' %}">
+        <button type="button" class="btn btn-danger">Go Back!</button>
+    </a>
+</div>
+{% bootstrap_javascript %}
+{% endblock %}

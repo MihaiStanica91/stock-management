@@ -5,7 +5,7 @@ from django.contrib import messages
 from ..models import Company
 
 
-
+@login_required(login_url="/")
 def company_register(request):
 
     form = CompanyForm()
@@ -24,14 +24,9 @@ def company_register(request):
 
             return redirect("/dashboard")
     
-    context = {'companyform':form}
+    context = {'company_form':form}
     return render(request, "company_register.html", context = context)
 
-
-@login_required(login_url="/")
-def company_register_url(request):
-
-    return render(request, "company_register.html")
 
 @login_required(login_url="/")
 def edit_company(request):

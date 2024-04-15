@@ -30,7 +30,7 @@ def home_view(request):
                 return redirect("dashboard")
 
 
-    context = {'loginform' : form}
+    context = {'login_form' : form}
 
     return render(request, "home.html", context = context)
 
@@ -62,7 +62,7 @@ def signup(request):
 
             return redirect("/")
     
-    context = {'registerform' : form, 'roleform' : role_form}
+    context = {'register_form' : form, 'role_form' : role_form}
     return render(request, "signup.html", context = context)
 
 
@@ -74,6 +74,9 @@ def user_logout(request):
 
 @login_required(login_url="/")
 def send_invitation(request):
+
+    form = EmailForm()
+
     if request.method == 'POST':
         form = EmailForm(request.POST)
         if form.is_valid():
@@ -86,10 +89,9 @@ def send_invitation(request):
 
             invitation.send_invitation(request)
         return render(request, 'invitation_sent.html')
-    else:
-        form = EmailForm()
+         
 
-    context = {'invitationform' : form}
+    context = {'invitation_form' : form}
     return render(request, 'send_invitation_form.html', context = context)
     
 

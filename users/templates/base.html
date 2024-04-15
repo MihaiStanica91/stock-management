@@ -9,30 +9,9 @@
     <title>{% block title %}Stock Management{%endblock title %}</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" data-bs-theme="dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'dashboard' %}">Stock Management</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{request.user.username}}
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit profile</a></li>
-                          <li><a class="dropdown-item" href="{% url 'edit_company_details' %}">Company details</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    
+    {% include 'navbar.html' %}
+
     {% bootstrap_messages %}
     
     <div class="container mt-4">

@@ -20,8 +20,8 @@
         <div class="col-sm-3">
             <form method="POST" autocomplete="off">
                 {% csrf_token %}
-                {% bootstrap_form registerform %}
-                {% bootstrap_form roleform %}
+                {% bootstrap_form register_form %}
+                {% bootstrap_form role_form %}
                 <div class="d-flex justify-content-center">
                     <input type="submit" class="btn btn-success" value="Register"/>
                 </div>
