@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
 from django.forms.widgets import PasswordInput, TextInput
-from users.models import Company, CustomUser
+from users.models import Company, CustomUser, Supplier
 
 
 # - Create/Register a user
@@ -32,11 +32,20 @@ class CompanyForm(ModelForm):
         model = Company
         fields = ["name", "address", "email", "phone_number", "category"]
 
+class SupplierForm(ModelForm):
+    class Meta:
+
+        model = Supplier
+        fields = ["name", "address", "email", "phone_number"]
+
 
 class CustomUser(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('role',)
+        widgets = {
+            'role': forms.HiddenInput(),  # Hide the role field
+        }
 
 
 class EmailForm(forms.Form):

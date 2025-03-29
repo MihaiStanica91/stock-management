@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import company, user
+from .views import company, user, supplier
 
 urlpatterns = [
     path("", user.home_view, name=""),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('accept-invite/<str:key>/', user.accept_invitation, name='accept_invite'),
     path("dashboard/edit-profile", user.edit_profile, name="edit_profile"),
     path("dashboard/edit-company-details", company.edit_company, name="edit_company_details"),
+    path("dashboard/new_supplier/", supplier.supplier_create, name="supplier_create")
 ]
