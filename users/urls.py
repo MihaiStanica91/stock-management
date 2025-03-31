@@ -11,5 +11,6 @@ urlpatterns = [
     path('accept-invite/<str:key>/', user.accept_invitation, name='accept_invite'),
     path("dashboard/edit-profile", user.edit_profile, name="edit_profile"),
     path("dashboard/edit-company-details", company.edit_company, name="edit_company_details"),
-    path("dashboard/new_supplier/", supplier.supplier_create, name="supplier_create")
+    path("dashboard/new_supplier/", supplier.supplier_create, name="supplier_create"),
+    path('dashboard/suppliers/', supplier.supplier_list, name='supplier_list'),
 ]

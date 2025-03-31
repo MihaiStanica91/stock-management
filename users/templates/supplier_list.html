@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Supplier List{%endblock title %}
+
+{% block content %}
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Supplier List</h2>
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Supplier Code</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for supplier in suppliers %}
+                <tr>
+                    <td>{{ supplier.supplier_code }}</td>
+                    <td>{{ supplier.name }}</td>
+                    <td>{{ supplier.email }}</td>
+                    <td>{{ supplier.phone_number }}</td>
+                    <td>{{ supplier.address }}</td>
+                    <td>{{ supplier.company_id }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No suppliers available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'dashboard' %}">
+            <button type="button" class="btn btn-primary">Home</button>
+        </a>
+    </div>
+</body>
+{% bootstrap_javascript %}
+{% endblock %}

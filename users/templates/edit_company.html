@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% bootstrap_css %}
-    <title>Edit Profile</title>
+    <title>Edit Company</title>
 </head>
 <body>
     {% bootstrap_messages %}
@@ -16,14 +16,30 @@
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        <div class="col-sm-3">
-            <form method="POST" autocomplete="off">
-                {% csrf_token %}
-                {% bootstrap_form edit_company_details %}
-                <div class="d-flex justify-content-center">
-                    <input type="submit" class="btn btn-success" value="Save"/>
+        <div class="col-sm-6">
+            {% if show_selection %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Select a Company to Edit</h5>
+                        <div class="list-group">
+                            {% for company in companies %}
+                                <a href="?company_id={{ company.id }}" class="list-group-item list-group-item-action">
+                                    {{ company.name }} - {{ company.email }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-            </form>
+            {% else %}
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <input type="hidden" name="company_id" value="{{ selected_company.id }}">
+                    {% bootstrap_form edit_company_details %}
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" class="btn btn-success" value="Save"/>
+                    </div>
+                </form>
+            {% endif %}
             <br>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'dashboard' %}">

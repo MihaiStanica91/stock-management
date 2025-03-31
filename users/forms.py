@@ -34,9 +34,16 @@ class CompanyForm(ModelForm):
 
 class SupplierForm(ModelForm):
     class Meta:
-
         model = Supplier
-        fields = ["name", "address", "email", "phone_number"]
+        fields = ["name", "address", "email", "phone_number", "company_id"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['company_id'].queryset = Company.objects.filter(user_id=user)
+            self.fields['company_id'].label = "Select Company"
+            self.fields['company_id'].required = True
 
 
 class CustomUser(forms.ModelForm):

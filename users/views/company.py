@@ -21,7 +21,8 @@ def company_register(request):
             company = form.save(commit=False)
             company.user_id = user
             company.save()
-
+            
+            messages.success(request, 'Company profile has been created successfully!')
             return redirect("/dashboard")
     
     context = {'company_form':form}
@@ -30,24 +31,42 @@ def company_register(request):
 
 @login_required(login_url="/")
 def edit_company(request):
-    try:
-        company = Company.objects.get(user_id=request.user.id)
-    except Company.DoesNotExist:
-        # Handle the case where the user does not have a company
-        # Check if the message is already in messages
-        if not messages.get_messages(request):
-            # Add the message only if it's not already in messages
-            messages.error(request, 'You do not have a company profile.')
-        return redirect('dashboard')  # Redirect to home page or appropriate URL
+    # Get all companies for the current user
+    companies = Company.objects.filter(user_id=request.user.id)
+    
+    if not companies.exists():
+        messages.error(request, 'You do not have any company profiles.')
+        return redirect('dashboard')
 
-    if request.method == 'POST':
-        form = CompanyEditForm(request.POST, instance=company)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Company details have been updated successfully!')
+    # If company_id is provided in POST or GET, edit that specific company
+    company_id = request.POST.get('company_id') or request.GET.get('company_id')
+    
+    if company_id:
+        try:
+            company = companies.get(id=company_id)
+        except Company.DoesNotExist:
+            messages.error(request, 'Selected company does not exist.')
             return redirect('dashboard')
+
+        if request.method == 'POST':
+            form = CompanyEditForm(request.POST, instance=company)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Company details have been updated successfully!')
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Please correct the errors below.')
         else:
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        form = CompanyEditForm(instance=company)
-    return render(request, 'edit_company.html', {'edit_company_details': form})
+            form = CompanyEditForm(instance=company)
+        
+        return render(request, 'edit_company.html', {
+            'edit_company_details': form,
+            'companies': companies,
+            'selected_company': company
+        })
+    
+    # If no company is selected, show the company selection page
+    return render(request, 'edit_company.html', {
+        'companies': companies,
+        'show_selection': True
+    })
