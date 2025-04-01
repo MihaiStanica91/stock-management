@@ -22,4 +22,5 @@ urlpatterns = [
 
     path("", include("users.urls")),
     path("", include('invitations.urls')),
+    path("company/", include("company.urls")),
 ]

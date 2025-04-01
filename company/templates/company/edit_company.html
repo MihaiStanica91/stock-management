@@ -31,7 +31,7 @@
                     </div>
                 </div>
             {% else %}
-                <form method="POST" autocomplete="off">
+                <form method="POST" action="{% url 'company:edit_company' %}" autocomplete="off">
                     {% csrf_token %}
                     <input type="hidden" name="company_id" value="{{ selected_company.id }}">
                     {% bootstrap_form edit_company_details %}
@@ -50,4 +50,4 @@
     </div>
     {% bootstrap_javascript %}
 </body>
-</html>
+</html> 

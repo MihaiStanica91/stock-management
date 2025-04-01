@@ -5,14 +5,7 @@
 {% block title %}Dashboard{%endblock title %}
 
 {% block content %}
-{% for message in messages %}
-    {% if message.message != 'You do not have a company profile.' %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-        </div>
-    {% endif %}
-{% endfor %}
+
 <div class="d-flex justify-content-center">
     <h3>Welcome {{request.user.username}}!!!</h3>
 </div>
@@ -20,21 +13,21 @@
 <br>
 <br>
 <div class="d-flex justify-content-center">
-    <a href="{% url 'company_register' %}">
+    <a href="{% url 'company:company_register' %}">
         <button type="button" class="btn btn-primary">Add a company</button>
     </a>
 </div>
 <br>
 <br>
 <div class="d-flex justify-content-center">
-    <a href="{% url 'supplier_create' %}">
+    <a href="{% url 'company:supplier_register' %}">
         <button type="button" class="btn btn-primary">Add a supplier</button>
     </a>
 </div>
 <br>
 <br>
 <div class="d-flex justify-content-center">
-    <a href="{% url 'supplier_list' %}">
+    <a href="{% url 'company:supplier_list' %}">
         <button type="button" class="btn btn-primary">Suppliers</button>
     </a>
 </div>
