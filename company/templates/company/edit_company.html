@@ -1,13 +1,9 @@
+{% extends 'base.html' %}
 {% load bootstrap5 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% bootstrap_css %}
-    <title>Edit Company</title>
-</head>
-<body>
+
+{% block title %}Edit Company{% endblock title %}
+
+{% block content %}
     {% bootstrap_messages %}
     <br>
     <br>
@@ -39,15 +35,19 @@
                         <input type="submit" class="btn btn-success" value="Save"/>
                     </div>
                 </form>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'company:edit_company' %}">
+                        <button type="button" class="btn btn-danger">Go Back!</button>
+                    </a>
+                </div>
             {% endif %}
             <br>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'dashboard' %}">
-                    <button type="button" class="btn btn-danger">Go Back!</button>
+                    <button type="button" class="btn btn-primary">Home</button>
                 </a>
             </div>
         </div>
     </div>
-    {% bootstrap_javascript %}
-</body>
-</html> 
+{% endblock %} 

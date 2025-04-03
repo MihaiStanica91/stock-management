@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block title %}Edit Supplier{% endblock title %}
+
+{% block content %}
+    {% bootstrap_messages %}
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <h3>Edit Supplier Details</h3>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-3">
+            <form method="POST" action="{% url 'company:edit_supplier' %}" autocomplete="off">
+                {% csrf_token %}
+                <input type="hidden" name="supplier_id" value="{{ selected_supplier.id }}">
+                {% bootstrap_form edit_supplier %}
+                <div class="d-flex justify-content-center">
+                    <input type="submit" class="btn btn-success" value="Save"/>
+                </div>
+            </form>
+            <br>
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'company:supplier_list' %}">
+                    <button type="button" class="btn btn-danger">Go Back!</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -48,3 +48,33 @@ class SupplierForm(ModelForm):
             self.fields['company_id'].queryset = Company.objects.filter(user_id=user)
             self.fields['company_id'].label = "Select Company"
             self.fields['company_id'].required = True
+
+
+class SupplierEditForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['name', 'address', 'email', 'phone_number']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError("Email is required")
+        return email
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            raise forms.ValidationError("Name is required")
+        return name
+
+    def clean_address(self):
+        address = self.cleaned_data.get('address')
+        if not address:
+            raise forms.ValidationError("Address is required")
+        return address
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if not phone_number:
+            raise forms.ValidationError("Phone number is required")
+        return phone_number 
