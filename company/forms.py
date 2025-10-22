@@ -39,7 +39,7 @@ class CompanyEditForm(forms.ModelForm):
 class SupplierForm(ModelForm):
     class Meta:
         model = Supplier
-        fields = ["name", "address", "email", "phone_number", "company_id"]
+        fields = ["name", "address", "email", "phone_number", "supplier_details", "company_id"]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -53,7 +53,7 @@ class SupplierForm(ModelForm):
 class SupplierEditForm(forms.ModelForm):
     class Meta:
         model = Supplier
-        fields = ['name', 'address', 'email', 'phone_number']
+        fields = ['name', 'address', 'email', 'phone_number', 'supplier_details']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -78,3 +78,9 @@ class SupplierEditForm(forms.ModelForm):
         if not phone_number:
             raise forms.ValidationError("Phone number is required")
         return phone_number 
+
+    def clean_details(self):
+        supplier_details = self.cleaned_data.get('supplier_details')
+        if not supplier_details:
+            raise forms.ValidationError("Add some details about this supplier")
+        return supplier_details

@@ -96,6 +96,33 @@ def supplier_list(request):
     
     context = {'suppliers': suppliers}
     return render(request, "supplier/supplier_list.html", context=context)
+    
+@login_required(login_url="/")
+def supplier_profile(request):
+    # Get all companies for the current user
+    companies = Company.objects.filter(user_id=request.user.id)
+    
+    if not companies.exists():
+        messages.error(request, 'You do not have any company profiles.')
+        return redirect('dashboard')
+    
+    # Get the supplier_id from query parameters
+    supplier_id = request.GET.get('supplier_id')
+    
+    if not supplier_id:
+        messages.error(request, 'No supplier selected.')
+        return redirect('company:supplier_list')
+    
+    try:
+        # Get the specific supplier for the user's companies
+        supplier = Supplier.objects.filter(company_id__in=companies).get(id=supplier_id)
+        
+        context = {'supplier': supplier}
+        return render(request, "supplier/supplier_profile.html", context=context)
+        
+    except Supplier.DoesNotExist:
+        messages.error(request, 'Supplier not found or you do not have permission to view this supplier.')
+        return redirect('company:supplier_list')
 
 
 @login_required(login_url="/")
@@ -120,8 +147,8 @@ def edit_supplier(request):
         form = SupplierEditForm(request.POST, instance=supplier)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Supplier details have been updated successfully!')
-            return redirect('company:supplier_list')
+            messages.success(request, 'Supplier profile have been updated successfully!')
+            return redirect(f'/company/supplier/list/profile?supplier_id={supplier_id}')
         else:
             messages.error(request, 'Please correct the errors below.')
             print(form.errors)  # Add this for debugging

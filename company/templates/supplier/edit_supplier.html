@@ -23,7 +23,7 @@
             </form>
             <br>
             <div class="d-flex justify-content-center">
-                <a href="{% url 'company:supplier_list' %}">
+                <a href="{% url 'company:supplier_profile' %}?supplier_id={{ selected_supplier.id }}">
                     <button type="button" class="btn btn-danger">Go Back!</button>
                 </a>
             </div>

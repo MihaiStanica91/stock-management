@@ -23,7 +23,7 @@
                                 <input type="hidden" name="supplier_id" value="{{ supplier.id }}">
                                 <button type="submit" class="btn btn-danger">Yes, Delete</button>
                             </form>
-                            <a href="{% url 'company:supplier_list' %}" class="btn btn-secondary">No, Cancel</a>
+                            <a href="{% url 'company:supplier_profile' %}?supplier_id={{ supplier.id }}" class="btn btn-secondary">No, Cancel</a>
                         </div>
                     </div>
                 </div>

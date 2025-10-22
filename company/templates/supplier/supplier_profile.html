@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Supplier Profile{%endblock title %}
+
+{% block content %}
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Supplier Profile</h2>
+
+        <div class="card text-center">
+            <div class="card-header">
+              <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                    type="button" role="tab" aria-controls="tab1" aria-selected="true">Contacts</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                    type="button" role="tab" aria-controls="tab2" aria-selected="false">Description</button>
+                </li>
+                <li class="nav-item p-2" role="presentation">
+                    <a href="{% url 'company:edit_supplier' %}?supplier_id={{ supplier.id }}" 
+                    class="btn btn-warning btn-sm" style="min-width: 60px;">Edit</a>
+                </li>
+                <li class="nav-item p-2" role="presentation">
+                    <a href="{% url 'company:delete_supplier_confirm' %}?supplier_id={{ supplier.id }}" 
+                    class="btn btn-danger btn-sm" style="min-width: 60px;">Delete</a>
+                </li>
+              </ul>
+            </div>
+        
+            <div class="card-body tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <h5 class="card-title bg-info p-2 rounded">{{ supplier.name }}</h5>
+                <p class="card-text"><span class="fw-bold">Code:</span> {{supplier.supplier_code}}</p>
+                <p class="card-text"><span class="fw-bold">Email:</span> {{supplier.email}}</p>
+                <p class="card-text"><span class="fw-bold">Phone:</span> {{supplier.phone_number}}</p>
+                <p class="card-text"><span class="fw-bold">Address:</span> {{supplier.address}}</p>
+                <p class="card-text"><span class="fw-bold">#</span> {{supplier.company_id}}</p>
+              </div>
+        
+              <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                <p class="card-text">{{supplier.supplier_details}}</p>
+              </div>
+        
+            </div>
+          </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'company:supplier_list' %}">
+            <button type="button" class="btn btn-warning">Back</button>
+        </a>
+    </div>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'dashboard' %}">
+            <button type="button" class="btn btn-primary">Home</button>
+        </a>
+    </div>
+</body>
+{% bootstrap_javascript %}
+{% endblock %} 

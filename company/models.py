@@ -21,6 +21,7 @@ class Supplier(models.Model):
     address = models.CharField(max_length=200)
     supplier_code = models.PositiveIntegerField(unique=True, editable=False)
     created_date = models.DateField(auto_now_add=True)
+    supplier_details = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.supplier_code:
