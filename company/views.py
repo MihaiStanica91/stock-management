@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from company.utils import markdownify
 from .models import Company, Supplier
 from .forms import CompanyForm, CompanyEditForm, SupplierForm, SupplierEditForm
 
@@ -116,7 +117,7 @@ def supplier_profile(request):
     try:
         # Get the specific supplier for the user's companies
         supplier = Supplier.objects.filter(company_id__in=companies).get(id=supplier_id)
-        
+        supplier.description = markdownify(supplier.supplier_details)
         context = {'supplier': supplier}
         return render(request, "supplier/supplier_profile.html", context=context)
         

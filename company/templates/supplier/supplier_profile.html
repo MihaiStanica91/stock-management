@@ -34,16 +34,18 @@
         
             <div class="card-body tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                <h5 class="card-title bg-info p-2 rounded">{{ supplier.name }}</h5>
-                <p class="card-text"><span class="fw-bold">Code:</span> {{supplier.supplier_code}}</p>
-                <p class="card-text"><span class="fw-bold">Email:</span> {{supplier.email}}</p>
-                <p class="card-text"><span class="fw-bold">Phone:</span> {{supplier.phone_number}}</p>
-                <p class="card-text"><span class="fw-bold">Address:</span> {{supplier.address}}</p>
-                <p class="card-text"><span class="fw-bold">#</span> {{supplier.company_id}}</p>
+                <h5 class="card-title bg-info p-2 rounded text-center">{{ supplier.name }}</h5>
+                <p class="card-text text-center"><span class="fw-bold">Code:</span> {{supplier.supplier_code}}</p>
+                <p class="card-text text-center"><span class="fw-bold">Email:</span> {{supplier.email}}</p>
+                <p class="card-text text-center"><span class="fw-bold">Phone:</span> {{supplier.phone_number}}</p>
+                <p class="card-text text-center"><span class="fw-bold">Address:</span> {{supplier.address}}</p>
+                <p class="card-text text-center"><span class="fw-bold">#</span> {{supplier.company_id}}</p>
               </div>
         
               <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                <p class="card-text">{{supplier.supplier_details}}</p>
+                <div class="d-flex justify-content-center">
+                  <div class="text-center" style="list-style-position: inside;">{{supplier.description|safe}}</div>
+                </div>
               </div>
         
             </div>
@@ -53,16 +55,14 @@
     <br>
     <br>
     <div class="d-flex justify-content-center">
-        <a href="{% url 'company:supplier_list' %}">
-            <button type="button" class="btn btn-warning">Back</button>
-        </a>
-    </div>
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <a href="{% url 'dashboard' %}">
-            <button type="button" class="btn btn-primary">Home</button>
-        </a>
+        <div class="btn-group-vertical mb-4" role="group" aria-label="Actions">
+            <a href="{% url 'company:supplier_list' %}">
+                <button type="button" class="btn btn-warning mb-4">Back</button>
+            </a>
+            <a href="{% url 'dashboard' %}">
+                <button type="button" class="btn btn-primary p-2">Home</button>
+            </a>
+        </div>
     </div>
 </body>
 {% bootstrap_javascript %}
