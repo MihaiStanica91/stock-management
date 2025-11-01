@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Measurement List{%endblock title %}
+
+{% block content %}
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Measurement List</h2>
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">Type of Measurement</th>
+                    <th class="text-center">Company</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for measurement in measurements %}
+                <tr>
+                    <td class="text-center">{{ measurement.type_of_measurement }}</td>
+                    <td class="text-center">{{ measurement.company_id }}</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{% url 'company:delete_measurement_confirm' %}?measurement_id={{ measurement.id }}" class="btn btn-danger btn-sm" style="min-width: 60px;">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No measurements available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'company:measurement_register' %}">
+            <button type="button" class="btn btn-warning">Add measurement</button>
+        </a>
+    </div>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'dashboard' %}">
+            <button type="button" class="btn btn-primary">Home</button>
+        </a>
+    </div>
+</body>
+{% bootstrap_javascript %}
+{% endblock %} 

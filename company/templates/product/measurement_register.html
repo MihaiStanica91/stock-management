@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block title %}Supplier Register{%endblock title %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.message != 'You do not have a registered company.' %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+    {% endif %}
+{% endfor %}
+<div>
+<br>
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <h3>Register a measurement</h3>
+</div>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="col-sm-3">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            {% bootstrap_form type_of_measurement_form %}
+            <div class="d-flex justify-content-center">
+                <input type="submit" class="btn btn-success" value="Register"/>
+            </div>
+        </form>
+        <br>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'dashboard' %}">
+                <button type="button" class="btn btn-primary">Home</button>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %} 
