@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 
+{% bootstrap_css %}
+
 {% block title %}Edit Supplier{% endblock title %}
 
 {% block content %}
-    {% bootstrap_messages %}
+    
     <br>
     <br>
     <div class="d-flex justify-content-center">
@@ -29,4 +31,5 @@
             </div>
         </div>
     </div>
+{% bootstrap_javascript %}
 {% endblock %}

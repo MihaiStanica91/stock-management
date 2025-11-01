@@ -49,6 +49,16 @@ class SupplierForm(ModelForm):
             self.fields['company_id'].label = "Select Company"
             self.fields['company_id'].required = True
 
+    def clean(self):
+        cleaned_data = super().clean()
+        company_id = cleaned_data.get('company_id')
+        if company_id:
+            for field_name, error_msg in [('name', 'name'), ('email', 'email')]:
+                value = cleaned_data.get(field_name)
+                if value and Supplier.objects.filter(company_id=company_id, **{field_name: value}).exclude(pk=self.instance.pk or 0).exists():
+                    self.add_error(field_name, f'Supplier with this {error_msg} already exists in this company!')
+        return cleaned_data
+
 
 class SupplierEditForm(forms.ModelForm):
     class Meta:
@@ -59,12 +69,16 @@ class SupplierEditForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         if not email:
             raise forms.ValidationError("Email is required")
+        if self.instance.company_id and Supplier.objects.filter(company_id=self.instance.company_id, email=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Supplier with this email already exists in this company!')
         return email
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if not name:
             raise forms.ValidationError("Name is required")
+        if self.instance.company_id and Supplier.objects.filter(company_id=self.instance.company_id, name=name).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError('Supplier with this name already exists in this company!')
         return name
 
     def clean_address(self):
