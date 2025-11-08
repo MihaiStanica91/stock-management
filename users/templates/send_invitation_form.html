@@ -7,26 +7,28 @@
 
 {% block content %}
 {% bootstrap_messages %}
-<div class="d-flex justify-content-center">
-    <h1>Send Invitation</h1>
-</div>
 <br>
 <br>
 <div class="d-flex justify-content-center">
-    <form method="post" autocomplete="off">
-        {% csrf_token %}
-        {% bootstrap_form invitation_form %}
-        <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary">Send Invitation</button>
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Send Invitation</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" autocomplete="off">
+                    {% csrf_token %}
+                    {% bootstrap_form invitation_form %}
+                    <div class="d-flex justify-content-center mt-3">
+                        <button type="submit" class="btn btn-primary me-2">Send Invitation</button>
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-danger">Go Back!</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
-</div>
-<br>
-<br>
-<div class="d-flex justify-content-center">
-    <a href="{% url 'dashboard' %}">
-        <button type="button" class="btn btn-danger">Go Back!</button>
-    </a>
+    </div>
 </div>
 {% bootstrap_javascript %}
 {% endblock %}

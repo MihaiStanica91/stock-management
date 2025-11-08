@@ -19,8 +19,8 @@ class SignUpForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
 
-    username = forms.CharField(widget=TextInput())
-    password = forms.CharField(widget=PasswordInput())
+    username = forms.CharField(widget=TextInput(attrs={'class': 'form-control', 'id': 'floatingInput', 'placeholder': 'Username'}))
+    password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control', 'id': 'floatingPassword', 'placeholder': 'Password'}))
 
 
 class CustomUser(forms.ModelForm):

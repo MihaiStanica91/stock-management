@@ -1,21 +1,21 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'dashboard' %}">Inventory Management</a>
+        <a class="navbar-brand" style="font-family: 'Georgia', serif;" href="{% url 'dashboard' %}">Inventory Management</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link" style="font-family: 'Georgia', serif;" href="{% url 'dashboard' %}">Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" style="font-family: 'Georgia', serif;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{request.user.username}}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'company:edit_company' %}">Company details</a></li>
+                        <li><a class="dropdown-item" style="font-family: 'Georgia', serif;" href="{% url 'edit_profile' %}">Edit profile</a></li>
+                        <li><a class="dropdown-item" style="font-family: 'Georgia', serif;" href="{% url 'company:edit_company' %}">Company details</a></li>
                     </ul>
                 </li>
             </ul>
@@ -30,41 +30,49 @@
 </nav>
 
 
-<div class="offcanvas offcanvas-end" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasRightLabel">Settings</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<div class="offcanvas offcanvas-end bg-dark text-white" style="width: 250px;" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header bg-dark">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'company:company_register' %}">
-                <button type="button" class="btn btn-primary">Add a company</button>
+    <div class="offcanvas-body p-0 bg-dark">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 100%; height: 100%;">
+            <a href="{% url 'dashboard' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" onmouseover="this.style.color='#0a58ca'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                <span class="fs-4">Home</span>
             </a>
-        </div>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'company:supplier_register' %}">
-                <button type="button" class="btn btn-primary">Add a supplier</button>
-            </a>
-        </div>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'company:supplier_list' %}">
-                <button type="button" class="btn btn-primary">Suppliers</button>
-            </a>
-        </div>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'company:measurement_register' %}">
-                <button type="button" class="btn btn-primary">Add a measurement</button>
-            </a>
-        </div>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'company:measurement_list' %}">
-                <button type="button" class="btn btn-primary">Measurements</button>
-            </a>
-        </div>
-        <div class="d-flex justify-content-center p-2">
-            <a href="{% url 'send_invitation_form' %}">
-                <button type="button" class="btn btn-primary">Create new user</button>
-            </a>
+            <hr style="border-color: rgba(255, 255, 255, 0.3);">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'company:company_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Add a company
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'company:supplier_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Add a supplier
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'company:supplier_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Suppliers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'company:measurement_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Add a measurement
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'company:measurement_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Measurements
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'send_invitation_form' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                        Create new user
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
+

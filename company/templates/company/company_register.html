@@ -7,31 +7,28 @@
 
 {% block content %}
 {% bootstrap_messages %}
-<div>
-<br>
 <br>
 <br>
 <div class="d-flex justify-content-center">
-    <h3>Register your company</h3>
-</div>
-<br>
-<div class="d-flex justify-content-center">
-    <div class="col-sm-3">
-        <form method="POST" autocomplete="off">
-            {% csrf_token %}
-            {% bootstrap_form company_form %}
-            <div class="d-flex justify-content-center">
-                <input type="submit" class="btn btn-success" value="Register"/>
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Register your company</h3>
             </div>
-        </form>
-        <br>
-        <div class="d-flex justify-content-center">
-            <a href="{% url 'dashboard' %}">
-                <button type="button" class="btn btn-primary">Back</button>
-            </a>
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    {% bootstrap_form company_form %}
+                    <div class="d-flex justify-content-center mt-3">
+                        <input type="submit" class="btn btn-success me-2" value="Register"/>
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-primary">Back</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 {% bootstrap_javascript %}
 {% endblock %} 
