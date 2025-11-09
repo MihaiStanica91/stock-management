@@ -1,12 +1,12 @@
+{% extends 'base.html' %}
 {% load bootstrap5 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% bootstrap_css %}
-    <title>Edit Profile</title>
-</head>
+
+{% bootstrap_css %}
+
+{% block title %}Edit Profile{% endblock title %}
+
+{% block content %}
+
 <body>
     {% bootstrap_messages %}
     <br>
@@ -34,4 +34,4 @@
     </div>
     {% bootstrap_javascript %}
 </body>
-</html>
+{% endblock %}
