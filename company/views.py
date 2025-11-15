@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from company.utils import markdownify
-from .models import Company, Supplier, Quantity
-from .forms import CompanyForm, CompanyEditForm, SupplierForm, SupplierEditForm, TypeOfMeasurementForm
+from .models import Company, Supplier, ProductMeasurement, ProductCategory, VatRate
+from .forms import CompanyForm, CompanyEditForm, SupplierForm, SupplierEditForm, TypeOfMeasurementForm, ProductCategoryForm, VatRateForm 
 
 # Create your views here.
 
@@ -237,7 +237,7 @@ def measurement_list(request):
         return redirect('dashboard')
     
     # Get all measurements for the user's companies
-    measurements = Quantity.objects.filter(company_id__in=companies)
+    measurements = ProductMeasurement.objects.filter(company_id__in=companies)
     
     context = {'measurements': measurements}
     return render(request, "product/measurement_list.html", context=context)
@@ -245,7 +245,7 @@ def measurement_list(request):
 @login_required(login_url="/")
 def delete_measurement(request):
     # Get all measurements for the current user's companies
-    measurements = Quantity.objects.filter(company_id__user_id=request.user.id)
+    measurements = ProductMeasurement.objects.filter(company_id__user_id=request.user.id)
     
     if not measurements.exists():
         messages.error(request, 'You do not have any measurements.')
@@ -262,7 +262,7 @@ def delete_measurement(request):
         measurement = measurements.get(id=measurement_id)
         measurement.delete()
         messages.success(request, 'Measurement successfully deleted!')
-    except Quantity.DoesNotExist:
+    except ProductMeasurement.DoesNotExist:
         messages.error(request, 'Selected measurement does not exist.')
     
     return redirect('company:measurement_list')
@@ -270,7 +270,7 @@ def delete_measurement(request):
 @login_required(login_url="/")
 def delete_measurement_confirm(request):
     # Get all measurements for the current user's companies
-    measurements = Quantity.objects.filter(company_id__user_id=request.user.id)
+    measurements = ProductMeasurement.objects.filter(company_id__user_id=request.user.id)
     
     if not measurements.exists():
         messages.error(request, 'You do not have any measurements.')
@@ -288,6 +288,166 @@ def delete_measurement_confirm(request):
         return render(request, 'product/delete_measurement_confirm.html', {
             'measurement': measurement
         })
-    except Quantity.DoesNotExist:
+    except ProductMeasurement.DoesNotExist:
         messages.error(request, 'Selected measurement does not exist.')
         return redirect('company:measurement_list')
+
+@login_required(login_url="/")
+def product_category_register(request):
+    form = ProductCategoryForm(user=request.user)
+
+    if request.method == "POST":
+        form = ProductCategoryForm(request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Product category has been registered successfully!')
+            return redirect('company:product_category_list')
+    
+    context = {'product_category_form':form}
+    return render(request, "product/product_category_register.html", context=context)
+
+@login_required(login_url="/")
+def product_category_list(request):
+    # Get all companies for the current user
+    companies = Company.objects.filter(user_id=request.user.id)
+    
+    if not companies.exists():
+        messages.error(request, 'You do not have any company profiles.')
+        return redirect('dashboard')
+    
+    # Get all product categories for the user's companies
+    product_categories = ProductCategory.objects.filter(company_id__in=companies)
+
+    context = {'product_categories': product_categories}
+    return render(request, "product/product_category_list.html", context=context)
+
+@login_required(login_url="/")
+def delete_product_category(request):
+    # Get all product categories for the current user's companies
+    product_categories = ProductCategory.objects.filter(company_id__user_id=request.user.id)
+    
+    if not product_categories.exists():
+        messages.error(request, 'You do not have any product categories.')
+        return redirect('dashboard')
+    
+    # Get the product_category_id from POST
+    product_category_id = request.POST.get('product_category_id')
+    
+    if not product_category_id:
+        messages.error(request, 'No product category selected for deletion.')
+        return redirect('company:product_category_list')
+    
+    try:
+        product_category = product_categories.get(id=product_category_id)
+        product_category.delete()
+        messages.success(request, 'Product category successfully deleted!')
+    except ProductCategory.DoesNotExist:
+        messages.error(request, 'Selected product category does not exist.')
+        
+    return redirect('company:product_category_list')
+
+@login_required(login_url="/")
+def delete_product_category_confirm(request):
+    # Get all product categories for the current user's companies
+    product_categories = ProductCategory.objects.filter(company_id__user_id=request.user.id)
+    
+    if not product_categories.exists():
+        messages.error(request, 'You do not have any product categories.')
+        return redirect('dashboard')
+    
+    # Get the product_category_id from GET
+    product_category_id = request.GET.get('product_category_id')
+    
+    if not product_category_id:
+        messages.error(request, 'No product category selected for deletion.')
+        return redirect('company:product_category_list')
+    
+    try:
+        product_category = product_categories.get(id=product_category_id)
+        return render(request, 'product/delete_product_category_confirm.html', {
+            'product_category': product_category
+        })
+    except ProductCategory.DoesNotExist:
+        messages.error(request, 'Selected product category does not exist.')
+        return redirect('company:product_category_list')
+
+@login_required(login_url="/")
+def vat_rate_register(request):
+    form = VatRateForm(user=request.user)
+
+    if request.method == "POST":
+        form = VatRateForm(request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'VAT rate has been registered successfully!')
+            return redirect('company:vat_rate_list')
+    
+    context = {'vat_rate_form':form}
+    return render(request, "product/vat_rate_register.html", context=context)
+
+@login_required(login_url="/")
+def vat_rate_list(request):
+    # Get all companies for the current user
+    companies = Company.objects.filter(user_id=request.user.id)
+    
+    if not companies.exists():
+        messages.error(request, 'You do not have any company profiles.')
+        return redirect('dashboard')
+    
+    # Get all VAT rates for the user's companies
+    vat_rates = VatRate.objects.filter(company_id__in=companies)
+
+    context = {'vat_rates': vat_rates}
+    return render(request, "product/vat_rate_list.html", context=context)
+
+@login_required(login_url="/")
+def delete_vat_rate(request):
+    # Get all VAT rates for the current user's companies
+    vat_rates = VatRate.objects.filter(company_id__user_id=request.user.id)
+    
+    if not vat_rates.exists():
+        messages.error(request, 'You do not have any VAT rates.')
+        return redirect('dashboard')
+    
+    # Get the vat_rate_id from POST
+    vat_rate_id = request.POST.get('vat_rate_id')
+    
+    if not vat_rate_id:
+        messages.error(request, 'No VAT rate selected for deletion.')
+        return redirect('company:vat_rate_list')
+    
+    try:
+        vat_rate = vat_rates.get(id=vat_rate_id)
+        vat_rate.delete()
+        messages.success(request, 'VAT rate successfully deleted!')
+    except VatRate.DoesNotExist:
+        messages.error(request, 'Selected VAT rate does not exist.')
+        
+    return redirect('company:vat_rate_list')
+
+@login_required(login_url="/")
+def delete_vat_rate_confirm(request):
+    # Get all VAT rates for the current user's companies
+    vat_rates = VatRate.objects.filter(company_id__user_id=request.user.id)
+    
+    if not vat_rates.exists():
+        messages.error(request, 'You do not have any VAT rates.')
+        return redirect('dashboard')
+    
+    # Get the vat_rate_id from GET
+    vat_rate_id = request.GET.get('vat_rate_id')
+    
+    if not vat_rate_id:
+        messages.error(request, 'No VAT rate selected for deletion.')
+        return redirect('company:vat_rate_list')
+    
+    try:
+        vat_rate = vat_rates.get(id=vat_rate_id)
+        return render(request, 'product/delete_vat_rate_confirm.html', {
+            'vat_rate': vat_rate
+        })
+    except VatRate.DoesNotExist:
+        messages.error(request, 'Selected VAT rate does not exist.')
+        return redirect('company:vat_rate_list')    

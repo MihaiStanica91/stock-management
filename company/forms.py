@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Company, Quantity, Supplier
+from .models import Company, ProductMeasurement, Supplier, ProductCategory, VatRate
 
 class CompanyForm(ModelForm):
     class Meta:
@@ -101,14 +101,14 @@ class SupplierEditForm(forms.ModelForm):
 
 class TypeOfMeasurementForm(ModelForm):
     class Meta:
-        model = Quantity
+        model = ProductMeasurement
         fields = ["type_of_measurement", "company_id"]
 
     # Remove extra spaces and convert to lowercase
     def clean_type_of_measurement(self):
         value = self.cleaned_data.get('type_of_measurement', '')
         value = ' '.join(value.split()).strip()
-        if Quantity.objects.filter(company_id=self.cleaned_data.get('company_id'), type_of_measurement=value).exists():
+        if ProductMeasurement.objects.filter(company_id=self.cleaned_data.get('company_id'), type_of_measurement=value).exists():
             raise forms.ValidationError("Measurement already registered!")
         return value
 
@@ -119,3 +119,50 @@ class TypeOfMeasurementForm(ModelForm):
             self.fields['company_id'].queryset = Company.objects.filter(user_id=user)
             self.fields['company_id'].label = "Select Company"
             self.fields['company_id'].required = True
+
+class ProductCategoryForm(ModelForm):
+    class Meta:
+        model = ProductCategory
+        fields = ["category", "company"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['company'].queryset = Company.objects.filter(user_id=user)
+            self.fields['company'].label = "Select Company"
+            self.fields['company'].required = True
+
+    def clean_category(self):
+        value = self.cleaned_data.get('category', '')
+        value = ' '.join(value.split()).strip()
+        if ProductCategory.objects.filter(company=self.cleaned_data.get('company'), category=value).exists():
+            raise forms.ValidationError("Product category with this name already exists in this company!")
+        return value
+
+class VatRateForm(ModelForm):
+    class Meta:
+        model = VatRate
+        fields = ["vat_rate", "company"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['company'].queryset = Company.objects.filter(user_id=user)
+            self.fields['company'].label = "Select Company"
+            self.fields['company'].required = True
+
+    def clean_vat_rate(self):
+        value = self.cleaned_data.get('vat_rate')
+        if value is None:
+            raise forms.ValidationError("VAT rate is required")
+        if value < 0:
+            raise forms.ValidationError("VAT rate cannot be negative")
+        if value > 100:
+            raise forms.ValidationError("VAT rate cannot exceed 100%")
+        # Check for duplicate VAT rate in the same company
+        company = self.cleaned_data.get('company')
+        if company and VatRate.objects.filter(company=company, vat_rate=value).exclude(pk=self.instance.pk or 0).exists():
+            raise forms.ValidationError("VAT rate already registered for this company!")
+        return value

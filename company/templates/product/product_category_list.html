@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Product Category List{%endblock title %}
+
+{% block content %}
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Product Category List</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">Product Category</th>
+                            <th class="text-center">Company</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product_category in product_categories %}
+                        <tr>
+                            <td class="text-center">{{ product_category.category }}</td>
+                            <td class="text-center">{{ product_category.company }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{% url 'company:delete_product_category_confirm' %}?product_category_id={{ product_category.id }}" class="btn btn-danger btn-sm" style="min-width: 60px;">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No product categories available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center mt-3 gap-2">
+                    <a href="{% url 'company:product_category_register' %}">
+                        <button type="button" class="btn btn-warning">Add product category</button>
+                    </a>
+                    <a href="{% url 'dashboard' %}">
+                        <button type="button" class="btn btn-primary">Home</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %} 

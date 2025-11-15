@@ -16,4 +16,12 @@ urlpatterns = [
     path('measurement/list/', views.measurement_list, name='measurement_list'),
     path('measurement/delete/confirm/', views.delete_measurement_confirm, name='delete_measurement_confirm'),
     path('measurement/delete/', views.delete_measurement, name='delete_measurement'),
+    path('product/category/register/', views.product_category_register, name='product_category_register'),
+    path('product/category/list/', views.product_category_list, name='product_category_list'),
+    path('product/category/delete/confirm/', views.delete_product_category_confirm, name='delete_product_category_confirm'),
+    path('product/category/delete/', views.delete_product_category, name='delete_product_category'),
+    path('vat-rate/register/', views.vat_rate_register, name='vat_rate_register'),
+    path('vat-rate/list/', views.vat_rate_list, name='vat_rate_list'),
+    path('vat-rate/delete/confirm/', views.delete_vat_rate_confirm, name='delete_vat_rate_confirm'),
+    path('vat-rate/delete/', views.delete_vat_rate, name='delete_vat_rate'),
 ]

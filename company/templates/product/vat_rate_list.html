@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}VAT Rate List{%endblock title %}
+
+{% block content %}
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">VAT Rate List</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">VAT Rate</th>
+                            <th class="text-center">Company</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vat_rate in vat_rates %}
+                        <tr>
+                            <td class="text-center">{{ vat_rate.display_vat_rate }}</td>
+                            <td class="text-center">{{ vat_rate.company }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{% url 'company:delete_vat_rate_confirm' %}?vat_rate_id={{ vat_rate.id }}" class="btn btn-danger btn-sm" style="min-width: 60px;">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No VAT rates available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center mt-3 gap-2">
+                    <a href="{% url 'company:vat_rate_register' %}">
+                        <button type="button" class="btn btn-warning">Add VAT Rate</button>
+                    </a>
+                    <a href="{% url 'dashboard' %}">
+                        <button type="button" class="btn btn-primary">Home</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %}
+

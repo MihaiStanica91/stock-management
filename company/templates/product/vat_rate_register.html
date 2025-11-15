@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block title %}VAT Rate Register{%endblock title %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.message != 'You do not have a registered company.' %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+    {% endif %}
+{% endfor %}
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Register a VAT Rate</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    {% bootstrap_form vat_rate_form %}
+                    <div class="d-flex justify-content-center mt-3">
+                        <input type="submit" class="btn btn-success me-2" value="Register"/>
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-primary">Home</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %}
+
