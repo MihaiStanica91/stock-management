@@ -23,7 +23,7 @@
                 <h3 class="card-title mb-0 text-center">Register a VAT Rate</h3>
             </div>
             <div class="card-body">
-                <form method="POST" autocomplete="off">
+                <form method="POST" autocomplete="off" novalidate>
                     {% csrf_token %}
                     {% bootstrap_form vat_rate_form %}
                     <div class="d-flex justify-content-center mt-3">

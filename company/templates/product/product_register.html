@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block title %}Product Register{%endblock title %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.message != 'You do not have a registered company.' %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+    {% endif %}
+{% endfor %}
+<div class="d-flex justify-content-center">
+    <div class="col-sm-6 col-md-5 col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Register a product</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    {% bootstrap_form product_form %}
+                    <div class="d-flex justify-content-center mt-3">
+                        <input type="submit" class="btn btn-success me-2" value="Register"/>
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-primary">Home</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const companyField = document.getElementById('id_company');
+    const supplierField = document.getElementById('id_supplier');
+    const categoryField = document.getElementById('id_product_category');
+    const measurementField = document.getElementById('id_product_measurement');
+    const vatRateField = document.getElementById('id_product_vat_rate');
+    
+    if (!companyField) return;
+    
+    function updateOptions(companyId) {
+        // Clear all dependent fields
+        [supplierField, categoryField, measurementField, vatRateField].forEach(field => {
+            if (field) field.innerHTML = '<option value="">---------</option>';
+        });
+        
+        if (!companyId) return;
+        
+        // Fetch filtered options
+        fetch(`{% url 'company:get_company_options' %}?company_id=${companyId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update suppliers
+                if (supplierField && data.suppliers) {
+                    data.suppliers.forEach(s => {
+                        supplierField.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+                
+                // Update categories
+                if (categoryField && data.categories) {
+                    data.categories.forEach(c => {
+                        categoryField.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+                    });
+                }
+                
+                // Update measurements
+                if (measurementField && data.measurements) {
+                    data.measurements.forEach(m => {
+                        measurementField.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+                    });
+                }
+                
+                // Update VAT rates
+                if (vatRateField && data.vat_rates) {
+                    data.vat_rates.forEach(v => {
+                        vatRateField.innerHTML += `<option value="${v.id}">${v.name}</option>`;
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    // Listen for company selection changes
+    companyField.addEventListener('change', function() {
+        updateOptions(this.value);
+    });
+    
+    // Load options if company is already selected
+    if (companyField.value) {
+        updateOptions(companyField.value);
+    }
+});
+</script>
+{% endblock %} 

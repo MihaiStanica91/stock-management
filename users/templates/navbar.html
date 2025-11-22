@@ -1,98 +1,104 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" data-bs-theme="dark">
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" style="font-family: 'Georgia', serif;" href="{% url 'dashboard' %}">Inventory Management</a>
+        <a class="navbar-brand d-flex align-items-center" style="font-family: 'Georgia', serif;" href="{% url 'dashboard' %}">
+            <img src="{% static 'home/Logo.png' %}" alt="Logo" height="45" class="me-3" style="object-fit: contain;">
+            Inventory Management
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" style="font-family: 'Georgia', serif;" href="{% url 'dashboard' %}">Dashboard</a>
-                </li>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" style="font-family: 'Georgia', serif;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{request.user.username}}
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" style="font-family: 'Georgia', serif;" href="{% url 'edit_profile' %}">Edit profile</a></li>
-                        <li><a class="dropdown-item" style="font-family: 'Georgia', serif;" href="{% url 'company:edit_company' %}">Company details</a></li>
                     </ul>
                 </li>
             </ul>
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Settings</button>
-            <div class="d-flex justify-content-center p-2">
-                <a href="{% url 'user_logout' %}">
-                    <button type="button" class="btn btn-danger">Logout</button>
-                </a>
-            </div>
         </div>
     </div>
 </nav>
 
-
-<div class="offcanvas offcanvas-end bg-dark text-white" style="width: 250px;" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header bg-dark">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body p-0 bg-dark">
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 100%; height: 100%;">
-            <a href="{% url 'dashboard' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" onmouseover="this.style.color='#0a58ca'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                <span class="fs-4">Home</span>
-            </a>
-            <hr style="border-color: rgba(255, 255, 255, 0.3);">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="{% url 'company:company_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Add a company
-                    </a>
+<!-- Fixed Sidebar -->
+<aside id="sidebar" class="sidebar bg-dark text-white">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white" style="width: 100%; height: 100%;">
+        <a href="{% url 'dashboard' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <span class="fs-4">Dashboard</span>
+        </a>
+        <hr style="border-color: rgba(255, 255, 255, 0.3);">
+        <ul class="list-unstyled ps-0">
+                <!-- Company Section -->
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#company-collapse" aria-expanded="false" aria-controls="company-collapse" style="font-family: 'Georgia', serif;">
+                        Company
+                    </button>
+                    <div class="collapse" id="company-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'company:company_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a company</a></li>
+                        </ul>
+                    </div>
+                    <div class="collapse" id="company-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'company:edit_company' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Company List</a></li>
+                        </ul>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:supplier_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Add a supplier
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:supplier_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
+                
+                <!-- Suppliers Section -->
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#suppliers-collapse" aria-expanded="false" aria-controls="suppliers-collapse" style="font-family: 'Georgia', serif;">
                         Suppliers
-                    </a>
+                    </button>
+                    <div class="collapse" id="suppliers-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'company:supplier_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a supplier</a></li>
+                            <li><a href="{% url 'company:supplier_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Suppliers List</a></li>
+                        </ul>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:measurement_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Add a measurement
-                    </a>
+                
+                <!-- Products Section -->
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#products-collapse" aria-expanded="false" aria-controls="products-collapse" style="font-family: 'Georgia', serif;">
+                        Products
+                    </button>
+                    <div class="collapse" id="products-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'company:product_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a product</a></li>
+                            <li><a href="{% url 'company:product_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Products List</a></li>
+                            <li><a href="{% url 'company:product_category_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a product category</a></li>
+                            <li><a href="{% url 'company:product_category_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Product Categories</a></li>
+                            <li><a href="{% url 'company:measurement_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a Measurement</a></li>
+                            <li><a href="{% url 'company:measurement_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Measurements</a></li>
+                            <li><a href="{% url 'company:vat_rate_register' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Add a VAT rate</a></li>
+                            <li><a href="{% url 'company:vat_rate_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Vat rates</a></li>
+                        </ul>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:measurement_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Measurements
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:product_category_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Add a product category
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:product_category_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Product categories
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:vat_rate_register' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Add a VAT rate
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'company:vat_rate_list' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        VAT rates
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'send_invitation_form' %}" class="nav-link text-white" onmouseover="this.style.color='#0000FF'; this.style.backgroundColor='rgb(0, 0, 255)'" onmouseout="this.style.color='white'; this.style.backgroundColor='transparent'">
-                        Create new user
-                    </a>
+                
+                <li class="border-top my-3" style="border-color: rgba(255, 255, 255, 0.3);"></li>
+                
+                <!-- Account Section -->
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false" aria-controls="account-collapse" style="font-family: 'Georgia', serif;">
+                        Account
+                    </button>
+                    <div class="collapse" id="account-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'send_invitation_form' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Create a new user</a></li>
+                            <li><a href="{% url 'edit_profile' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Edit profile</a></li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
+        <hr style="border-color: rgba(255, 255, 255, 0.3);">
+        <div class="mt-auto">
+            <a href="{% url 'user_logout' %}" class="btn btn-danger w-100" style="font-family: 'Georgia', serif;">Logout</a>
         </div>
     </div>
-</div>
+</aside>
 

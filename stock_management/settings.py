@@ -135,3 +135,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 INVITATIONS_SIGNUP_REDIRECT = 'signup'
+
+# Bootstrap5 Configuration - Use CDN instead of django-bootstrap5's bundled version
+BOOTSTRAP5 = {
+    'css_url': None,  # We're using CDN in base.html
+    'javascript_url': None,  # We're using CDN in base.html
+    'javascript_in_head': False,
+    'include_jquery': False,
+}

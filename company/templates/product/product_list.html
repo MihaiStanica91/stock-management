@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Product List{%endblock title %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Products List</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">Product Code</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Product Category</th>
+                                <th class="text-center">Product Quantity</th>
+                                <th class="text-center">Product Measurement</th>
+                                <th class="text-center">Product Price Without VAT</th>
+                                <th class="text-center">Product VAT Rate</th>
+                                <th class="text-center">Product Price With VAT</th>
+                                <th class="text-center">Product VAT Amount</th>
+                                <th class="text-center">Supplier</th>
+                                <th class="text-center">Company</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 0.75rem;">
+                            {% for product in products %}
+                            <tr>
+                                <td class="text-center">{{ product.product_code }}</td>
+                                <td class="text-center">{{ product.product_name }}</td>
+                                <td class="text-center">{{ product.product_category.category }}</td>
+                                <td class="text-center">{{ product.product_quantity }}</td>
+                                <td class="text-center">{{ product.product_measurement.type_of_measurement }}</td>
+                                <td class="text-center">{{ product.product_price_without_vat }}</td>
+                                <td class="text-center">{{ product.product_vat_rate.vat_rate }}%</td>
+                                <td class="text-center">{{ product.product_price_with_vat }}</td>
+                                <td class="text-center">{{ product.product_vat_amount }}</td>
+                                <td class="text-center">{{ product.supplier.name }}</td>
+                                <td class="text-center">{{ product.company }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{% url 'company:edit_product' %}?product_id={{ product.id }}" class="btn btn-primary btn-sm" style="min-width: 60px;">Edit</a>
+                                        <a href="{% url 'company:delete_product_confirm' %}?product_id={{ product.id }}" class="btn btn-danger btn-sm" style="min-width: 60px;">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="12" class="text-center">No products available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center mt-3 gap-2">
+                    <a href="{% url 'company:product_register' %}">
+                        <button type="button" class="btn btn-warning">Add product</button>
+                    </a>
+                    <a href="{% url 'dashboard' %}">
+                        <button type="button" class="btn btn-primary">Home</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %} 

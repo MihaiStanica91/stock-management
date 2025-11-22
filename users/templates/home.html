@@ -5,15 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% bootstrap_css %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Stock Management</title>
     <style>
         /* Adjust the opacity of the background image */
         .background-image {
             /* Reference the image relative to the app's static directory */
-            background-image: url('{% static "home/home_background.jpg" %}');
-            /* Ensure the image covers the entire background */
+            background-image: url('{% static "home/login_background.png" %}');
+            /* Stretch the image to cover the entire screen */
             background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             /* Make the image cover the entire viewport */
             position: fixed;
             top: 0;
@@ -22,8 +24,8 @@
             height: 100%;
             /* Place the image behind other content */
             z-index: -1;
-            /* Set the opacity to create the fading effect */
-            opacity: 5; /* Adjust the opacity value as needed */
+            /* Set the opacity to make it visible */
+            opacity: 1;
         }
     </style>
 </head>
@@ -34,12 +36,12 @@
     <br>
     <br>
     <br>
-    <div class="d-flex justify-content-center">
-        <h1 class="text-light fw-bold" style="font-family: 'Georgia', serif; font-size: 3rem;">Inventory Management</h1>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <img src="{% static 'home/Logo.png' %}" alt="Logo" height="150" style="object-fit: contain; margin-bottom: 0.25rem;">
+        <h1 class="text-light fw-bold" style="font-family: 'Georgia', serif; font-size: 2rem; margin-top: 0;">Inventory Management</h1>
     </div>
     <div class="d-flex justify-content-center">
-        <div class="col-sm-3 fw-bold text-primary">
-            <br>
+        <div class="col-sm-2 fw-bold text-primary">
             <br>
             <br>
             <form method="POST" autocomplete="off">
@@ -85,6 +87,6 @@
             </div>
         </div>
     </div>
-    {% bootstrap_javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

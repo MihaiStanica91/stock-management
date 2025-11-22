@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block title %}Edit Product{% endblock title %}
+
+{% block content %}
+    
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-6 col-md-5 col-lg-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h3 class="card-title mb-0 text-center">Edit Product Details</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'company:edit_product' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ selected_product.id }}">
+                        {% bootstrap_form edit_product %}
+                        <div class="d-flex justify-content-center mt-3">
+                            <input type="submit" class="btn btn-success me-2" value="Save"/>
+                            <a href="{% url 'company:product_list' %}">
+                                <button type="button" class="btn btn-danger">Go Back!</button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% bootstrap_javascript %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const companyField = document.getElementById('id_company');
+    const supplierField = document.getElementById('id_supplier');
+    const categoryField = document.getElementById('id_product_category');
+    const measurementField = document.getElementById('id_product_measurement');
+    const vatRateField = document.getElementById('id_product_vat_rate');
+    
+    if (!companyField) return;
+    
+    // Store current selected values for restoration
+    const currentValues = {
+        supplier: supplierField ? supplierField.value : null,
+        category: categoryField ? categoryField.value : null,
+        measurement: measurementField ? measurementField.value : null,
+        vatRate: vatRateField ? vatRateField.value : null
+    };
+    
+    function updateOptions(companyId) {
+        // Clear all dependent fields
+        [supplierField, categoryField, measurementField, vatRateField].forEach(field => {
+            if (field) field.innerHTML = '<option value="">---------</option>';
+        });
+        
+        if (!companyId) return;
+        
+        // Fetch filtered options
+        fetch(`{% url 'company:get_company_options' %}?company_id=${companyId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update suppliers
+                if (supplierField && data.suppliers) {
+                    data.suppliers.forEach(s => {
+                        const selected = s.id == currentValues.supplier ? ' selected' : '';
+                        supplierField.innerHTML += `<option value="${s.id}"${selected}>${s.name}</option>`;
+                    });
+                }
+                
+                // Update categories
+                if (categoryField && data.categories) {
+                    data.categories.forEach(c => {
+                        const selected = c.id == currentValues.category ? ' selected' : '';
+                        categoryField.innerHTML += `<option value="${c.id}"${selected}>${c.name}</option>`;
+                    });
+                }
+                
+                // Update measurements
+                if (measurementField && data.measurements) {
+                    data.measurements.forEach(m => {
+                        const selected = m.id == currentValues.measurement ? ' selected' : '';
+                        measurementField.innerHTML += `<option value="${m.id}"${selected}>${m.name}</option>`;
+                    });
+                }
+                
+                // Update VAT rates
+                if (vatRateField && data.vat_rates) {
+                    data.vat_rates.forEach(v => {
+                        const selected = v.id == currentValues.vatRate ? ' selected' : '';
+                        vatRateField.innerHTML += `<option value="${v.id}"${selected}>${v.name}</option>`;
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    // Listen for company selection changes
+    companyField.addEventListener('change', function() {
+        updateOptions(this.value);
+    });
+    
+    // Load options if company is already selected
+    if (companyField.value) {
+        updateOptions(companyField.value);
+    }
+});
+</script>
+{% endblock %}
