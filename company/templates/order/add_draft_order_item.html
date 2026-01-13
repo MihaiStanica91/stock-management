@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block title %}Add Order Item{%endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-sm-8 col-md-6 col-lg-5">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Add Item to Draft Order</h3>
+                <p class="text-center mb-0 mt-2" style="font-size: 0.9rem;">Items will be saved until you create the order</p>
+            </div>
+            <div class="card-body">
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        <input type="submit" class="btn btn-success" value="Add Item"/>
+                        <a href="{% url 'company:view_draft_order_items' %}">
+                            <button type="button" class="btn btn-info">View Draft Items</button>
+                        </a>
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-primary">Home</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const companyField = document.getElementById('id_company_id');
+    const supplierField = document.getElementById('id_supplier_id');
+    const productField = document.getElementById('id_product_id');
+    const quantityField = document.getElementById('id_quantity');
+    const productMeasurementField = document.getElementById('id_product_measurement_id');
+    const priceField = document.getElementById('id_price');
+    
+    function updateCompanyOptions(companyId) {
+        // Clear dependent fields
+        [supplierField, productField, productMeasurementField, priceField].forEach(field => {
+            if (field) {
+                if (field.tagName === 'SELECT') {
+                    field.innerHTML = '<option value="">---------</option>';
+                } else {
+                    field.value = '';
+                }
+            }
+        });
+        
+        if (!companyId) return;
+        
+        // Fetch filtered options for company
+        fetch(`{% url 'company:get_company_options_for_draft' %}?company_id=${companyId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update suppliers
+                if (supplierField && data.suppliers) {
+                    data.suppliers.forEach(s => {
+                        supplierField.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+                
+                // Update measurements (all measurements for the company)
+                if (productMeasurementField && data.product_measurements) {
+                    data.product_measurements.forEach(pm => {
+                        productMeasurementField.innerHTML += `<option value="${pm.id}">${pm.type_of_measurement}</option>`;
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    function updateSupplierProducts(supplierId) {
+        // Clear product, measurement, and price fields
+        if (productField) productField.innerHTML = '<option value="">---------</option>';
+        if (productMeasurementField) productMeasurementField.innerHTML = '<option value="">---------</option>';
+        if (priceField) priceField.value = '';
+        
+        if (!supplierId) return;
+        
+        // Get company ID to ensure proper filtering
+        const companyId = companyField ? companyField.value : null;
+        if (!companyId) {
+            console.error('Company must be selected first');
+            return;
+        }
+        
+        // Fetch products for the selected supplier AND company
+        fetch(`{% url 'company:get_supplier_products' %}?supplier_id=${supplierId}&company_id=${companyId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                // Update products
+                if (productField && data.products) {
+                    data.products.forEach(p => {
+                        productField.innerHTML += `<option value="${p.id}" data-price="${p.price_with_vat}" data-measurement-id="${p.measurement_id}" data-measurement-name="${p.measurement_name}">${p.product_name}</option>`;
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    function updateProductDetails(productId) {
+        if (!productField || !productId) return;
+        
+        const selectedOption = productField.querySelector(`option[value="${productId}"]`);
+        if (selectedOption) {
+            const price = selectedOption.getAttribute('data-price');
+            const measurementId = selectedOption.getAttribute('data-measurement-id');
+            const measurementName = selectedOption.getAttribute('data-measurement-name');
+            
+            // Update price field
+            if (priceField && price) {
+                priceField.value = price;
+            }
+            
+            // Update measurement field - filter to show only the product's measurement
+            if (productMeasurementField && measurementId) {
+                productMeasurementField.innerHTML = `<option value="${measurementId}">${measurementName}</option>`;
+            }
+            
+            // Calculate total if quantity is set
+            calculateTotal();
+        }
+    }
+    
+    function calculateTotal() {
+        const price = parseFloat(priceField.value) || 0;
+        const quantity = parseFloat(quantityField.value) || 0;
+        // Total will be calculated on the server side, but we can show it here if needed
+        return price * quantity;
+    }
+    
+    // Listen for company selection changes
+    if (companyField) {
+        companyField.addEventListener('change', function() {
+            updateCompanyOptions(this.value);
+            // Clear supplier selection when company changes
+            if (supplierField) supplierField.value = '';
+            // Clear product, measurement, and price when company changes
+            if (productField) productField.innerHTML = '<option value="">---------</option>';
+            if (productMeasurementField) productMeasurementField.innerHTML = '<option value="">---------</option>';
+            if (priceField) priceField.value = '';
+        });
+    }
+    
+    // Listen for supplier selection changes
+    if (supplierField) {
+        supplierField.addEventListener('change', function() {
+            // Ensure company is selected first
+            const companyId = companyField ? companyField.value : null;
+            if (!companyId) {
+                alert('Please select a company first');
+                this.value = '';
+                return;
+            }
+            updateSupplierProducts(this.value);
+        });
+    }
+    
+    // Listen for product selection changes
+    if (productField) {
+        productField.addEventListener('change', function() {
+            updateProductDetails(this.value);
+        });
+    }
+    
+    // Auto-calculate total when quantity changes
+    if (quantityField && priceField) {
+        quantityField.addEventListener('input', function() {
+            calculateTotal();
+        });
+    }
+});
+</script>
+{% endblock %}
+

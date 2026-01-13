@@ -5,6 +5,7 @@ from .product_measurement import ProductMeasurement
 from .product_category import ProductCategory
 from .vat_rate import VatRate
 from .product import Product
+from .order import Order, OrderItem
 
 __all__ = [
     'Company',
@@ -13,5 +14,7 @@ __all__ = [
     'ProductCategory',
     'VatRate',
     'Product',
+    'Order',
+    'OrderItem',
 ]
 

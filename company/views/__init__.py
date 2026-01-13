@@ -31,7 +31,16 @@ from .product import (
     product_list,
     delete_product,
     delete_product_confirm,
-    get_company_options
+    get_company_options,
+) 
+from .create_order import (
+    order_list,
+    order_detail,
+    delete_order,
+    add_draft_order_item,
+    view_draft_order_items,
+    get_company_options_for_draft,
+    get_supplier_products
 )
 
 __all__ = [
@@ -67,5 +76,13 @@ __all__ = [
     'delete_product',
     'delete_product_confirm',
     'get_company_options',
+    # Order views
+    'order_list',
+    'order_detail',
+    'delete_order',
+    'add_draft_order_item',
+    'view_draft_order_items',
+    'get_company_options_for_draft',
+    'get_supplier_products',
 ]
 

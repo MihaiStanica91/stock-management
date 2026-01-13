@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% block title %}Order Details{%endblock title %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="card-title mb-0 text-center">Order #{{ order.order_number }} - Details</h3>
+            </div>
+            <div class="card-body">
+                <!-- Order Information -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Order Information</h5>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Order Number:</th>
+                                <td>{{ order.order_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Company:</th>
+                                <td>{{ order.order_id.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Supplier:</th>
+                                <td>{{ order.supplier_id.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Order Total:</th>
+                                <td><strong>{{ order.order_total }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Created Date:</th>
+                                <td>{{ order.order_created_date }}</td>
+                            </tr>
+                            <tr>
+                                <th>Created By:</th>
+                                <td>{{ order.order_created_by.username }}</td>
+                            </tr>
+                            {% if order.order_notes %}
+                            <tr>
+                                <th>Notes:</th>
+                                <td>{{ order.order_notes }}</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Order Items -->
+                <div class="mb-4">
+                    <h5>Order Items ({{ order_items.count }})</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Product</th>
+                                    <th class="text-center">Supplier</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Measurement</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-center">Date Added</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_items %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ item.product_id.product_name }}</td>
+                                    <td class="text-center">{{ item.supplier_id.name }}</td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="text-center">{{ item.product_measurement_id.type_of_measurement }}</td>
+                                    <td class="text-center">{{ item.price }}</td>
+                                    <td class="text-center">{{ item.total }}</td>
+                                    <td class="text-center">{{ item.order_item_created_date }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center">No items in this order</td>
+                                </tr>
+                                {% endfor %}
+                                {% if order_items %}
+                                <tr class="table-info">
+                                    <td colspan="6" class="text-end"><strong>Order Total:</strong></td>
+                                    <td class="text-center"><strong>{{ order.order_total }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="{% url 'company:order_list' %}">
+                        <button type="button" class="btn btn-secondary">Back to Orders List</button>
+                    </a>
+                    <a href="{% url 'dashboard' %}">
+                        <button type="button" class="btn btn-primary">Home</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% bootstrap_javascript %}
+{% endblock %}
+

@@ -48,6 +48,20 @@
                     </div>
                 </li>
                 
+                <!-- Orders Section -->
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false" aria-controls="orders-collapse" style="font-family: 'Georgia', serif;">
+                        Orders
+                    </button>
+                    <div class="collapse" id="orders-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'company:add_draft_order_item' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Start an order</a></li>
+                            <li><a href="{% url 'company:view_draft_order_items' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">View Draft Orders</a></li>
+                            <li><a href="{% url 'company:order_list' %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white" style="font-family: 'Georgia', serif;">Orders List</a></li>
+                        </ul>
+                    </div>
+                </li>
+
                 <!-- Suppliers Section -->
                 <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed text-white" data-bs-toggle="collapse" data-bs-target="#suppliers-collapse" aria-expanded="false" aria-controls="suppliers-collapse" style="font-family: 'Georgia', serif;">

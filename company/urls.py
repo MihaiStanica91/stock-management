@@ -30,4 +30,11 @@ urlpatterns = [
     path('vat-rate/delete/confirm/', views.delete_vat_rate_confirm, name='delete_vat_rate_confirm'),
     path('vat-rate/delete/', views.delete_vat_rate, name='delete_vat_rate'),
     path('ajax/company-options/', views.get_company_options, name='get_company_options'),
+    path('ajax/company-options-draft/', views.get_company_options_for_draft, name='get_company_options_for_draft'),
+    path('ajax/supplier-products/', views.get_supplier_products, name='get_supplier_products'),
+    path('order/list/', views.order_list, name='order_list'),
+    path('order/detail/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('order/delete/', views.delete_order, name='delete_order'),
+    path('order/add-draft-item/', views.add_draft_order_item, name='add_draft_order_item'),
+    path('order/view-draft-items/', views.view_draft_order_items, name='view_draft_order_items'),
 ]
