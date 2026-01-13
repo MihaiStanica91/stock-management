@@ -1,70 +1,67 @@
-{% extends 'base.html' %}
-{% load bootstrap5 %}
-{% bootstrap_css %}
+{% extends 'order/order_base.html' %}
 
 {% block title %}Order List{%endblock title %}
 
-{% block content %}
-<div class="d-flex justify-content-center">
+{% block content_wrapper %}
     <div class="col-12">
         <div class="card bg-light">
             <div class="card-header">
                 <h3 class="card-title mb-0 text-center">Orders List</h3>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead class="table-dark">
-                            <tr>
-                                <th class="text-center">Order Number</th>
-                                <th class="text-center">Company</th>
-                                <th class="text-center">Supplier</th>
-                                <th class="text-center">Order Total</th>
-                                <th class="text-center">Order Notes</th>
-                                <th class="text-center">Created Date</th>
-                                <th class="text-center">Created By</th>
-                                <th class="text-center">View Order</th>
-                                <th class="text-center">Delete Order</th>
-                            </tr>
-                        </thead>
-                        <tbody style="font-size: 0.75rem;">
-                            {% for order in orders %}
-                            <tr>
-                                <td class="text-center">{{ order.order_number }}</td>
-                                <td class="text-center">{{ order.order_id.name }}</td>
-                                <td class="text-center">{{ order.supplier_id.name }}</td>
-                                <td class="text-center">{{ order.order_total }}</td>
-                                <td class="text-center">{{ order.order_notes|default:"-" }}</td>
-                                <td class="text-center">{{ order.order_created_date }}</td>
-                                <td class="text-center">{{ order.order_created_by.username }}</td>
-                                <td class="text-center">
-                                    <a href="{% url 'company:order_detail' order.id %}" class="btn btn-success btn-sm">View Order</a>
-                                </td>
-                                <td class="text-center">
-                                    <form method="POST" action="{% url 'company:delete_order' %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete Order #{{ order.order_number }}? This action cannot be undone and will delete all order items.');">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="order_id" value="{{ order.id }}">
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete Order</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="8" class="text-center">No orders available</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="d-flex justify-content-center mt-3 gap-2">
-                    <a href="{% url 'dashboard' %}">
-                        <button type="button" class="btn btn-primary">Home</button>
-                    </a>
-                </div>
+                {% block card_content %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">Order Number</th>
+                                    <th class="text-center">Company</th>
+                                    <th class="text-center">Supplier</th>
+                                    <th class="text-center">Order Total</th>
+                                    <th class="text-center">Order Notes</th>
+                                    <th class="text-center">Created Date</th>
+                                    <th class="text-center">Created By</th>
+                                    <th class="text-center">View Order</th>
+                                    <th class="text-center">Delete Order</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 0.75rem;">
+                                {% for order in orders %}
+                                <tr>
+                                    <td class="text-center">{{ order.order_number }}</td>
+                                    <td class="text-center">{{ order.order_id.name }}</td>
+                                    <td class="text-center">{{ order.supplier_id.name }}</td>
+                                    <td class="text-center">{{ order.order_total }}</td>
+                                    <td class="text-center">{{ order.order_notes|default:"-" }}</td>
+                                    <td class="text-center">{{ order.order_created_date }}</td>
+                                    <td class="text-center">{{ order.order_created_by.username }}</td>
+                                    <td class="text-center">
+                                        <a href="{% url 'company:order_detail' order.id %}" class="btn btn-success btn-sm">View Order</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <form method="POST" action="{% url 'company:delete_order' %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete Order #{{ order.order_number }}? This action cannot be undone and will delete all order items.');">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete Order</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center">No orders available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        <a href="{% url 'dashboard' %}">
+                            <button type="button" class="btn btn-primary">Home</button>
+                        </a>
+                    </div>
+                {% endblock card_content %}
             </div>
         </div>
     </div>
-</div>
-{% bootstrap_javascript %}
-{% endblock %}
+{% endblock content_wrapper %}
 

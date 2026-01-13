@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+
+{% block content %}
+    
+    {# Common spacing - can be overridden or removed #}
+    {% block top_spacing %}
+        <br>
+        <br>
+    {% endblock top_spacing %}
+
+    {# Main content area - child templates can override this entire block if needed #}
+    {% block main_content %}
+        {# Main content wrapper - uses d-flex justify-content-center pattern #}
+        <div class="d-flex justify-content-center">
+            {# Column width wrapper - default for forms, can be overridden #}
+            {% block content_wrapper %}
+                <div class="col-sm-6 col-md-5 col-lg-4">
+                    {# Card container - common across most templates #}
+                    <div class="card bg-light">
+                        {# Card header - common structure #}
+                        <div class="card-header {% block card_header_class %}{% endblock card_header_class %}">
+                            <h3 class="card-title mb-0 text-center">
+                                {% block card_title %}{% endblock card_title %}
+                            </h3>
+                        </div>
+                        
+                        {# Card body - where specific content goes #}
+                        <div class="card-body">
+                            {% block card_content %}{% endblock card_content %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock content_wrapper %}
+        </div>
+    {% endblock main_content %}
+
+    {# Additional content after main card - for buttons, etc. #}
+    {% block additional_content %}{% endblock additional_content %}
+
+{% bootstrap_javascript %}
+{% endblock %}

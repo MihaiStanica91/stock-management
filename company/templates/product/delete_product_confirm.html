@@ -1,11 +1,12 @@
-{% extends 'base.html' %}
-{% load bootstrap5 %}
-{% bootstrap_css %}
+{% extends 'product/product_base.html' %}
 
 {% block title %}Delete Product{% endblock title %}
 
-{% block content %}
-<body class="bg-light">
+{% block messages %}{% endblock messages %}
+
+{% block top_spacing %}{% endblock top_spacing %}
+
+{% block main_content %}
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -30,6 +31,9 @@
             </div>
         </div>
     </div>
+{% endblock main_content %}
+
+{% block additional_content %}
     <br>
     <br>
     <br>
@@ -38,6 +42,4 @@
             <button type="button" class="btn btn-primary">Home</button>
         </a>
     </div>
-</body>
-{% bootstrap_javascript %}
-{% endblock %} 
+{% endblock additional_content %} 

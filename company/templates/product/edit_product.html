@@ -1,37 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'product/product_base.html' %}
 {% load bootstrap5 %}
-
-{% bootstrap_css %}
 
 {% block title %}Edit Product{% endblock title %}
 
-{% block content %}
-    
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <div class="col-sm-6 col-md-5 col-lg-4">
-            <div class="card bg-light">
-                <div class="card-header">
-                    <h3 class="card-title mb-0 text-center">Edit Product Details</h3>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{% url 'company:edit_product' %}" autocomplete="off">
-                        {% csrf_token %}
-                        <input type="hidden" name="product_id" value="{{ selected_product.id }}">
-                        {% bootstrap_form edit_product %}
-                        <div class="d-flex justify-content-center mt-3">
-                            <input type="submit" class="btn btn-success me-2" value="Save"/>
-                            <a href="{% url 'company:product_list' %}">
-                                <button type="button" class="btn btn-danger">Go Back!</button>
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+{% block card_title %}Edit Product Details{% endblock card_title %}
+
+{% block card_content %}
+    <form method="POST" action="{% url 'company:edit_product' %}" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ selected_product.id }}">
+        {% bootstrap_form edit_product %}
+        <div class="d-flex justify-content-center mt-3">
+            <input type="submit" class="btn btn-success me-2" value="Save"/>
+            <a href="{% url 'company:product_list' %}">
+                <button type="button" class="btn btn-danger">Go Back!</button>
+            </a>
         </div>
-    </div>
-{% bootstrap_javascript %}
+    </form>
+{% endblock card_content %}
+
+{% block additional_content %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const companyField = document.getElementById('id_company');
@@ -108,4 +96,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-{% endblock %}
+{% endblock additional_content %}

@@ -1,13 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'order/order_base.html' %}
 {% load bootstrap5 %}
-
-{% bootstrap_css %}
 
 {% block title %}Add Order Item{%endblock title %}
 
-{% block content %}
-
-<div class="d-flex justify-content-center">
+{% block content_wrapper %}
     <div class="col-sm-8 col-md-6 col-lg-5">
         <div class="card bg-light">
             <div class="card-header">
@@ -15,24 +11,27 @@
                 <p class="text-center mb-0 mt-2" style="font-size: 0.9rem;">Items will be saved until you create the order</p>
             </div>
             <div class="card-body">
-                <form method="POST" autocomplete="off">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    <div class="d-flex justify-content-center mt-3 gap-2">
-                        <input type="submit" class="btn btn-success" value="Add Item"/>
-                        <a href="{% url 'company:view_draft_order_items' %}">
-                            <button type="button" class="btn btn-info">View Draft Items</button>
-                        </a>
-                        <a href="{% url 'dashboard' %}">
-                            <button type="button" class="btn btn-primary">Home</button>
-                        </a>
-                    </div>
-                </form>
+                {% block card_content %}
+                    <form method="POST" autocomplete="off">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="d-flex justify-content-center mt-3 gap-2">
+                            <input type="submit" class="btn btn-success" value="Add Item"/>
+                            <a href="{% url 'company:view_draft_order_items' %}">
+                                <button type="button" class="btn btn-info">View Draft Items</button>
+                            </a>
+                            <a href="{% url 'dashboard' %}">
+                                <button type="button" class="btn btn-primary">Home</button>
+                            </a>
+                        </div>
+                    </form>
+                {% endblock card_content %}
             </div>
         </div>
     </div>
-</div>
-{% bootstrap_javascript %}
+{% endblock content_wrapper %}
+
+{% block additional_content %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const companyField = document.getElementById('id_company_id');
@@ -183,5 +182,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-{% endblock %}
+{% endblock additional_content %}
 

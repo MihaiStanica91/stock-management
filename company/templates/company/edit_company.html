@@ -1,61 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'company/company_base.html' %}
 {% load bootstrap5 %}
-
-{% bootstrap_css %}
 
 {% block title %}Edit Company{% endblock title %}
 
-{% block content %}
-    
-    <br>
-    <br>
-    <div class="d-flex justify-content-center">
-        <div class="col-sm-6 col-md-5 col-lg-4">
-            {% if show_selection %}
-                <div class="card bg-light">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0 text-center">Edit Company Details</h3>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Select a Company to Edit</h5>
-                        <div class="list-group">
-                            {% for company in companies %}
-                                <a href="?company_id={{ company.id }}" class="list-group-item list-group-item-action">
-                                    {{ company.name }} - {{ company.email }}
-                                </a>
-                            {% endfor %}
-                        </div>
-                        <div class="d-flex justify-content-center mt-3">
-                            <a href="{% url 'dashboard' %}">
-                                <button type="button" class="btn btn-primary">Home</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="card bg-light">
-                    <div class="card-header">
-                        <h3 class="card-title mb-0 text-center">Edit Company Details</h3>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{% url 'company:edit_company' %}" autocomplete="off">
-                            {% csrf_token %}
-                            <input type="hidden" name="company_id" value="{{ selected_company.id }}">
-                            {% bootstrap_form edit_company_details %}
-                            <div class="d-flex justify-content-center mt-3">
-                                <input type="submit" class="btn btn-success me-2" value="Save"/>
-                                <a href="{% url 'company:edit_company' %}">
-                                    <button type="button" class="btn btn-danger me-2">Go Back!</button>
-                                </a>
-                                <a href="{% url 'dashboard' %}">
-                                    <button type="button" class="btn btn-primary">Home</button>
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            {% endif %}
+{% block card_title %}Edit Company Details{% endblock card_title %}
+
+{% block card_content %}
+    {% if show_selection %}
+        <h5 class="card-title">Select a Company to Edit</h5>
+        <div class="list-group">
+            {% for company in companies %}
+                <a href="?company_id={{ company.id }}" class="list-group-item list-group-item-action">
+                    {{ company.name }} - {{ company.email }}
+                </a>
+            {% endfor %}
         </div>
-    </div>
-{% bootstrap_javascript %}
-{% endblock %} 
+        <div class="d-flex justify-content-center mt-3">
+            <a href="{% url 'dashboard' %}">
+                <button type="button" class="btn btn-primary">Home</button>
+            </a>
+        </div>
+    {% else %}
+        <form method="POST" action="{% url 'company:edit_company' %}" autocomplete="off">
+            {% csrf_token %}
+            <input type="hidden" name="company_id" value="{{ selected_company.id }}">
+            {% bootstrap_form edit_company_details %}
+            <div class="d-flex justify-content-center mt-3">
+                <input type="submit" class="btn btn-success me-2" value="Save"/>
+                <a href="{% url 'company:edit_company' %}">
+                    <button type="button" class="btn btn-danger me-2">Go Back!</button>
+                </a>
+                <a href="{% url 'dashboard' %}">
+                    <button type="button" class="btn btn-primary">Home</button>
+                </a>
+            </div>
+        </form>
+    {% endif %}
+{% endblock card_content %} 
