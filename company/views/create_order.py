@@ -102,11 +102,13 @@ def view_draft_order_items(request):
                 return redirect('company:view_draft_order_items')
         elif 'clear_draft' in request.POST:
             request.session['draft_order_items'] = []
+            request.session['draft_order_notes'] = ''
             request.session.modified = True
             messages.success(request, 'Draft order cleared.')
             return redirect('company:add_draft_order_item')
     else:
-        form = CreateOrderForm()
+        initial_notes = request.session.get('draft_order_notes', '')
+        form = CreateOrderForm(initial={'order_notes': initial_notes})
     
     context = {
         'items': items_with_details,
@@ -169,8 +171,9 @@ def create_order_from_draft(request, order_notes=''):
                     user=request.user
                 )
             
-            # Clear draft items
+            # Clear draft items and voice notes
             request.session['draft_order_items'] = []
+            request.session.pop('draft_order_notes', None)
             request.session.modified = True
             
             messages.success(request, f'Order #{order.order_number} created successfully with {len(draft_items)} item(s)!')

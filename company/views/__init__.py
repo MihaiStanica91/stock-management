@@ -42,6 +42,7 @@ from .create_order import (
     get_company_options_for_draft,
     get_supplier_products
 )
+from .voice_order import create_voice_order
 
 __all__ = [
     # Company views
@@ -84,5 +85,6 @@ __all__ = [
     'view_draft_order_items',
     'get_company_options_for_draft',
     'get_supplier_products',
+    'create_voice_order',
 ]
 
