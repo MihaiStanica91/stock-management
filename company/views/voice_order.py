@@ -26,8 +26,8 @@ client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 
 # --- Shape of parsed voice order (company + items by product code, optional notes) ---
 class OrderItem(BaseModel):
-    product_code: str  # e.g. "100", "205"
-    quantity: float
+    product_code: int  # e.g. 100, 205
+    quantity: int
 
 class DraftOrder(BaseModel):
     company_name: str
@@ -111,7 +111,7 @@ def create_voice_order(request):
         # Parse transcript into structured order (company_name, items with product_code + quantity, notes)
         try:
             completion = client.beta.chat.completions.parse(
-                model="gpt-4o-mini",
+                model="gpt-5.4-mini",
                 messages=[
                     {
                         "role": "system",
@@ -119,7 +119,7 @@ def create_voice_order(request):
 1) REQUIRED company_name: the company the user is ordering for (e.g. "for company X", "company X").
 2) items: list of product_code and quantity. User says product by CODE (e.g. "order 1 of product code 100", "product code 205 quantity 3"). product_code is always a number (digits). quantity is a number. If quantity not said, use 1.
 3) notes: optional delivery/urgency/other instructions. Otherwise leave empty.
-Return JSON: company_name (required), items (list of {product_code: string of digits, quantity: number}), notes (optional)."""
+Return JSON: company_name (required), items (list of {product_code: number, quantity: number}), notes (optional)."""
                     },
                     {"role": "user", "content": raw_text},
                 ],
@@ -141,18 +141,17 @@ Return JSON: company_name (required), items (list of {product_code: string of di
         draft_items = []
         products_not_found = []
         for order_item in structured_order.items:
-            code_str = (order_item.product_code or "").strip().replace(" ", "")
-            if not code_str or not code_str.isdigit():
-                products_not_found.append(order_item.product_code or "?")
+            product_code = order_item.product_code
+            if product_code is None:
+                products_not_found.append("?")
                 continue
-            try:
-                product = Product.objects.filter(company=company, product_code=int(code_str)).select_related('product_measurement').first()
-            except ValueError:
-                product = None
+            product = Product.objects.filter(
+                company=company, product_code=int(product_code)
+            ).select_related('product_measurement').first()
             if not product:
-                products_not_found.append(code_str)
+                products_not_found.append(str(product_code))
                 continue
-            quantity = float(order_item.quantity)
+            quantity = int(order_item.quantity)
             price = product.product_price_with_vat
             total = Decimal(str(price)) * Decimal(str(quantity))
             draft_items.append({
