@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from company.utils import markdownify
 from ..models import Company, Supplier
-from ..forms import SupplierForm, SupplierEditForm
+from ..forms import SupplierForm, SupplierEditForm, SearchSupplierForm
 
 
 @login_required(login_url="/")
@@ -150,3 +150,16 @@ def delete_supplier(request):
     
     return redirect('company:supplier_list')
 
+
+@login_required(login_url="/")
+def search_supplier(request):
+    form = SearchSupplierForm(request.GET)
+    suppliers = Supplier.objects.filter(company_id__user_id=request.user.id)
+    if form.is_valid():
+        supplier_name = form.cleaned_data['supplier_name']
+        if supplier_name:
+            suppliers = suppliers.filter(name__icontains=supplier_name.strip())
+    return render(request, 'supplier/search_supplier.html', {
+        'suppliers': suppliers,
+        'form': form,
+    })

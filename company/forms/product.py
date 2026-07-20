@@ -108,3 +108,6 @@ class ProductForm(ModelForm):
         
         return cleaned_data
 
+
+class SearchProductForm(forms.Form):
+    product_name_or_code = forms.CharField(label="Product Name or Code", required=False)

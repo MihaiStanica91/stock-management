@@ -114,3 +114,7 @@ class CreateOrderForm(forms.Form):
         widget=forms.Textarea(attrs={'rows': 3})
     )
 
+class SearchOrderForm(forms.Form):
+    order_number = forms.CharField(label="Search Order Number", required=False)
+    order_supplier = forms.CharField(label="Search Order Supplier", required=False)
+    order_product = forms.CharField(label="Search Order Product", required=False)

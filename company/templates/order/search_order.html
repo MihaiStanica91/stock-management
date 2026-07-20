@@ -1,22 +1,13 @@
 {% extends 'order/order_base.html' %}
 
-{% block title %}Order List{%endblock title %}
+{% block title %}Search Order{%endblock title %}
 
 {% block content_wrapper %}
     <div class="col-12">
         <div class="card bg-light">
             <div class="card-header">
-                <h3 class="card-title mb-0 text-center">Orders List</h3>
+                <h3 class="card-title mb-0 text-center">Search Order</h3>
             </div>
-            <form class="d-flex m-3" role="search" method="get" action="{% url 'company:search_order' %}">
-                <input class="form-control me-2" type="search" placeholder="Search Order Number" aria-label="Search" name="order_number"/>
-                <input class="form-control me-2" type="search" placeholder="Search Order Supplier" aria-label="Search" name="order_supplier"/>
-                <input class="form-control me-2" type="search" placeholder="Search Order Product" aria-label="Search" name="order_product"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-                <a href="{% url 'company:order_list' %}">
-                    <button type="button" class="btn btn-warning" style="margin-left: 10px;">Clear</button>
-                </a>
-            </form>
             <div class="card-body">
                 {% block card_content %}
                     <div class="table-responsive">
@@ -57,11 +48,16 @@
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="8" class="text-center">No orders available</td>
+                                    <td colspan="8" class="text-center">No order found</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        <a href="{% url 'company:order_list' %}">
+                            <button type="button" class="btn btn-warning">Back to order list</button>
+                        </a>
                     </div>
                     <div class="d-flex justify-content-center mt-3 gap-2">
                         <a href="{% url 'dashboard' %}">

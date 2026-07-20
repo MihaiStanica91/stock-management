@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from ..models import Company, Supplier, ProductCategory, ProductMeasurement, VatRate, Product
-from ..forms import ProductForm
+from ..forms import ProductForm, SearchProductForm
 
 
 @login_required(login_url="/")
@@ -153,3 +153,19 @@ def get_company_options(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+@login_required(login_url="/")
+def search_product(request):
+    form = SearchProductForm(request.GET)
+    products = Product.objects.filter(company_id__user_id=request.user.id)
+    if form.is_valid():
+        product_name_or_code = form.cleaned_data['product_name_or_code']
+        if product_name_or_code:
+            if product_name_or_code.isdigit():
+                products = products.filter(product_code__icontains=product_name_or_code.strip())
+            else:
+                products = products.filter(product_name__icontains=product_name_or_code.strip())
+
+    return render(request, 'product/search_product.html', {
+        'products': products,
+        'form': form,
+    })

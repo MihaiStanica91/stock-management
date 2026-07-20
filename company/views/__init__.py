@@ -5,7 +5,8 @@ from .supplier import (
     supplier_profile,
     edit_supplier,
     delete_supplier_confirm,
-    delete_supplier
+    delete_supplier,
+    search_supplier,
 )
 from .measurement import (
     measurement_register,
@@ -32,6 +33,7 @@ from .product import (
     delete_product,
     delete_product_confirm,
     get_company_options,
+    search_product,
 ) 
 from .create_order import (
     order_list,
@@ -40,7 +42,8 @@ from .create_order import (
     add_draft_order_item,
     view_draft_order_items,
     get_company_options_for_draft,
-    get_supplier_products
+    get_supplier_products,
+    search_order,
 )
 from .voice_order import create_voice_order
 
@@ -55,6 +58,7 @@ __all__ = [
     'edit_supplier',
     'delete_supplier_confirm',
     'delete_supplier',
+    'search_supplier',
     # Measurement views
     'measurement_register',
     'measurement_list',
@@ -77,6 +81,7 @@ __all__ = [
     'delete_product',
     'delete_product_confirm',
     'get_company_options',
+    'search_product',
     # Order views
     'order_list',
     'order_detail',
@@ -86,5 +91,7 @@ __all__ = [
     'get_company_options_for_draft',
     'get_supplier_products',
     'create_voice_order',
+    'search_order',
+
 ]
 

@@ -66,3 +66,5 @@ class SupplierEditForm(forms.ModelForm):
             raise forms.ValidationError("Add some details about this supplier")
         return supplier_details
 
+class SearchSupplierForm(forms.Form):
+    supplier_name = forms.CharField(label="Search Supplier Name", required=False)

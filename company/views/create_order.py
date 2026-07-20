@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.db import transaction
 from decimal import Decimal
-from company.forms.draft_order import DraftOrderItemForm, CreateOrderForm
+from company.forms.draft_order import DraftOrderItemForm, CreateOrderForm, SearchOrderForm
 from company.models.order import Order, OrderItem
 from company.models import Company, Supplier, Product, ProductMeasurement
 
@@ -307,3 +307,22 @@ def get_supplier_products(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+@login_required(login_url="/")
+def search_order(request):
+    form = SearchOrderForm(request.GET)
+    orders = Order.objects.filter(order_id__user_id=request.user.id)
+    if form.is_valid():
+        order_number = form.cleaned_data['order_number']
+        order_supplier = form.cleaned_data['order_supplier']
+        order_product = form.cleaned_data['order_product']
+        filters = {}
+        if order_number and (order_number.isdigit() or order_supplier or order_product):
+            filters['order_number__icontains'] = order_number.strip()
+        if order_supplier:
+            filters['order_items__supplier_id__name__icontains'] = order_supplier.strip()
+        if order_product:
+            filters['order_items__product_id__product_name__icontains'] = order_product.strip()
+        if filters:
+            orders = orders.filter(**filters)
+        orders = orders.distinct()
+    return render(request, 'order/search_order.html', {'orders': orders, 'form': form})

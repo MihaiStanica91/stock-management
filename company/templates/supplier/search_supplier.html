@@ -1,17 +1,13 @@
 {% extends 'supplier/supplier_base.html' %}
 
-{% block title %}Supplier List{%endblock title %}
+{% block title %}Search Supplier{%endblock title %}
 
 {% block content_wrapper %}
     <div class="col-sm-10 col-md-8 col-lg-6">
         <div class="card bg-light">
             <div class="card-header">
-                <h3 class="card-title mb-0 text-center">Suppliers List</h3>
+                <h3 class="card-title mb-0 text-center">Search Supplier</h3>
             </div>
-            <form class="d-flex m-3" role="search" method="get" action="{% url 'company:search_supplier' %}">
-                <input class="form-control me-2" type="search" placeholder="Search Supplier Name" aria-label="Search" name="supplier_name"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
             <div class="card-body">
                 {% block card_content %}
                     <table class="table table-bordered table-striped">
@@ -35,14 +31,14 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="3" class="text-center">No suppliers available</td>
+                                <td colspan="3" class="text-center">No supplier found</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-center mt-3 gap-2">
-                        <a href="{% url 'company:supplier_register' %}">
-                            <button type="button" class="btn btn-warning">Add supplier</button>
+                        <a href="{% url 'company:supplier_list' %}">
+                            <button type="button" class="btn btn-warning">Back to supplier list</button>
                         </a>
                         <a href="{% url 'dashboard' %}">
                             <button type="button" class="btn btn-primary">Home</button>

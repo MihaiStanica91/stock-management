@@ -1,9 +1,9 @@
 from .company import CompanyForm, CompanyEditForm
-from .supplier import SupplierForm, SupplierEditForm
+from .supplier import SupplierForm, SupplierEditForm, SearchSupplierForm
 from .product_measurement import TypeOfMeasurementForm
 from .product_category import ProductCategoryForm
 from .vat_rate import VatRateForm
-from .product import ProductForm
+from .product import ProductForm, SearchProductForm
 
 __all__ = [
     'CompanyForm',
@@ -14,5 +14,8 @@ __all__ = [
     'ProductCategoryForm',
     'VatRateForm',
     'ProductForm',
+    'SearchProductForm',
+    'SearchSupplierForm',
+    'SearchOrderForm',
 ]
 

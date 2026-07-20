@@ -38,4 +38,7 @@ urlpatterns = [
     path('order/add-draft-item/', views.add_draft_order_item, name='add_draft_order_item'),
     path('order/view-draft-items/', views.view_draft_order_items, name='view_draft_order_items'),
     path('order/voice-order/', views.create_voice_order, name='create_voice_order'),
+    path('product/search/', views.search_product, name='search_product'),
+    path('supplier/search/', views.search_supplier, name='search_supplier'),
+    path('order/search/', views.search_order, name='search_order'),
 ]
