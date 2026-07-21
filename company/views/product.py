@@ -165,7 +165,7 @@ def search_product(request):
             else:
                 products = products.filter(product_name__icontains=product_name_or_code.strip())
 
-    return render(request, 'product/search_product.html', {
+    return render(request, 'product/search.html', {
         'products': products,
         'form': form,
     })

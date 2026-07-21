@@ -159,7 +159,7 @@ def search_supplier(request):
         supplier_name = form.cleaned_data['supplier_name']
         if supplier_name:
             suppliers = suppliers.filter(name__icontains=supplier_name.strip())
-    return render(request, 'supplier/search_supplier.html', {
+    return render(request, 'supplier/search.html', {
         'suppliers': suppliers,
         'form': form,
     })

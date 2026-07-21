@@ -325,4 +325,4 @@ def search_order(request):
         if filters:
             orders = orders.filter(**filters)
         orders = orders.distinct()
-    return render(request, 'order/search_order.html', {'orders': orders, 'form': form})
+    return render(request, 'order/search.html', {'orders': orders, 'form': form})
